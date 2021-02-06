@@ -57,6 +57,9 @@ public class RoomProvider : MonoBehaviour
     {
         _currentRoom = _controller.GetCurrentRoom();
         _roomID = _controller._roomID;
+
+        RoomChanged?.Invoke(this, EventArgs.Empty);
+
         RenderBackground(_currentRoom);
         AddTravelator?.Invoke(this, EventArgs.Empty);
         RenderExit(_currentRoom);
@@ -110,7 +113,6 @@ public class RoomProvider : MonoBehaviour
 
     private void Room_Changed(object sender, EventArgs e)
     {
-        RoomChanged?.Invoke(this, EventArgs.Empty);
         SetupRoom();
     }
 }

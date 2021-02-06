@@ -13,7 +13,7 @@ public class TextData
 
     public SpriteRenderer Renderer { get; set; }
 
-    public int SortingOrder { get; set; }
+    public int SortingOrder  { get; set; }
 
     public int FontColour { get; }
 
