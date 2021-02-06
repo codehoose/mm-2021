@@ -11,6 +11,7 @@ public class SpectrumFont : MonoBehaviour
     public void Add(string key, TextData text)
     {
         var go = new GameObject("Spectrum Text");
+        go.transform.SetParent(gameObject.transform);
         go.transform.position = new Vector3(text.X, -text.Y);
         var tex = SpriteUtil.CreateTexture(256, 8);
         tex.Clear(Color.clear);
@@ -19,6 +20,7 @@ public class SpectrumFont : MonoBehaviour
         text.Texture = tex;
         text.Renderer = sr;
         sr.sprite = Sprite.Create(tex, new Rect(0, 0, 256, 8), new Vector2(0, 1), 1);
+        sr.sortingOrder = text.SortingOrder;
         text.TextChanged += Text_Changed;
 
         _text.Add(key, text);

@@ -277,7 +277,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 128, y: -100, z: -10}
+  m_LocalPosition: {x: 128, y: -96, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -603,6 +603,70 @@ Transform:
   m_Father: {fileID: 2038849526}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2002259500
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2002259502}
+  - component: {fileID: 2002259501}
+  - component: {fileID: 2002259503}
+  m_Layer: 0
+  m_Name: SpectrumFont
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2002259501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002259500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69587ac33809c2d49b4ee096db186122, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _font: {fileID: 2800000, guid: 58b380fdf91936e49a7760c080e3ded7, type: 3}
+--- !u!4 &2002259502
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002259500}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 37.758144, y: 0.70512974, z: -321.90622}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2002259503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002259500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfb79efd77c70c498cfb909641289ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: "                                  .  .  .  .  .  .  .  .  .  . MANIC MINER
+    . . \x7F BUG-BYTE ltd. 1983 . . By Matthew Smith . . . Q to P = Left & Right .
+    . Bottom row = Jump . . A to G = Pause . . H to L = Tune On/Off . . . Guide Miner
+    Willy through 20 lethal caverns   .  .  .  .  .  .  .  .                                        \x81"
+  cooldown: 0.1
+  x: 0
+  y: 128
 --- !u!1 &2038849525
 GameObject:
   m_ObjectHideFlags: 0

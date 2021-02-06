@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Models\MMWillyStart.cs" />
     <Compile Include="Assets\Scripts\RoomController.cs" />
     <Compile Include="Assets\Scripts\RoomProvider.cs" />
+    <Compile Include="Assets\Scripts\ScrollingFont.cs" />
     <Compile Include="Assets\Scripts\SpectrumFont.cs" />
     <Compile Include="Assets\Scripts\StaticText.cs" />
     <Compile Include="Assets\Scripts\TextData.cs" />

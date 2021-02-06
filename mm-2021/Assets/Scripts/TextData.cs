@@ -13,6 +13,8 @@ public class TextData
 
     public SpriteRenderer Renderer { get; set; }
 
+    public int SortingOrder { get; set; }
+
     public int FontColour { get; }
 
     public string Text { get { return _text; }
