@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\BlockRenderer.cs" />
     <Compile Include="Assets\Scripts\CrumbleBlockProvider.cs" />
+    <Compile Include="Assets\Scripts\DasBoot.cs" />
     <Compile Include="Assets\Scripts\EventArgs\PositionalEventArgs.cs" />
     <Compile Include="Assets\Scripts\EventArgs\PositionalWithSourceEventArgs.cs" />
     <Compile Include="Assets\Scripts\ExitBlock.cs" />
