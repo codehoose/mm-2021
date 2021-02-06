@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mm-map-converter", "mm-map-converter\mm-map-converter.csproj", "{6151CA78-0D75-4C7A-ADA4-617517E3F93D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mm-converter-lib", "mm-converter-lib\mm-converter-lib.csproj", "{B0088A30-C932-4D98-A2FE-FD205268D791}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6151CA78-0D75-4C7A-ADA4-617517E3F93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6151CA78-0D75-4C7A-ADA4-617517E3F93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6151CA78-0D75-4C7A-ADA4-617517E3F93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6151CA78-0D75-4C7A-ADA4-617517E3F93D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0088A30-C932-4D98-A2FE-FD205268D791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0088A30-C932-4D98-A2FE-FD205268D791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0088A30-C932-4D98-A2FE-FD205268D791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0088A30-C932-4D98-A2FE-FD205268D791}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F0D32A04-9846-49FA-88CA-FDEE34D9B24F}
+	EndGlobalSection
+EndGlobal

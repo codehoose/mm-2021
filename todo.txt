@@ -1,0 +1,8 @@
+[ ] Convert data over to JSON
+[ ] Import graphics into Unity & create sprite sheets
+[ ] Import map data
+[ ] Render map
+[ ] Render conveyor
+[ ] Render Baddies
+[ ] Render MM Willy
+[ ] Move Willy
