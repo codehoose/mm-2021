@@ -1,13 +1,43 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public static class SpriteUtil
 {
+    public static Texture2D GetFrame(this Texture2D tex, int frame)
+    {
+        return GetSpriteData(tex, frame / 20, frame % 20)
+                .ToTexture2D(16, 16);
+    }
+
+    public static Texture2D[] GetFrames(this Texture2D tex, int startFrame, int length)
+    {
+        return Range(startFrame, length)
+                .Select((n) => GetFrame(tex, n))
+                .ToArray();
+    }
+
+    public static Sprite[] ToSprites(this Texture2D[] textures)
+    {
+        return textures.Select(t => t.ToSprite())
+                       .ToArray();
+    }
+
     public static Color[] GetSpriteData(this Texture2D tex, int row, int col)
     {
         var y = (24 - row) * 16;
         var x = col * 16;
 
         return tex.GetPixels(x, y, 16, 16);
+    }
+
+    public static int[] Range(int start, int length)
+    {
+        int[] values = new int[length];
+        for(int i = 0; i < length; i ++)
+        {
+            values[i] = start + i;
+        }
+        return values;
     }
 
     public static Sprite[] GetExitFrames(this Texture2D tex, int row, int col)

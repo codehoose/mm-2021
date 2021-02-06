@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\EventArgs\PositionalEventArgs.cs" />
     <Compile Include="Assets\Scripts\EventArgs\PositionalWithSourceEventArgs.cs" />
     <Compile Include="Assets\Scripts\ExitBlock.cs" />
+    <Compile Include="Assets\Scripts\HorizontalBaddies.cs" />
     <Compile Include="Assets\Scripts\KillBlockProvider.cs" />
     <Compile Include="Assets\Scripts\Models\MMMapFile.cs" />
     <Compile Include="Assets\Scripts\Models\MMMob.cs" />
@@ -77,6 +78,7 @@
     <Compile Include="Assets\Scripts\Models\MMRoom.cs" />
     <Compile Include="Assets\Scripts\Models\MMTravelator.cs" />
     <Compile Include="Assets\Scripts\Models\MMWillyStart.cs" />
+    <Compile Include="Assets\Scripts\Models\MobileObject.cs" />
     <Compile Include="Assets\Scripts\RoomController.cs" />
     <Compile Include="Assets\Scripts\RoomNineteenTopper.cs" />
     <Compile Include="Assets\Scripts\RoomProvider.cs" />

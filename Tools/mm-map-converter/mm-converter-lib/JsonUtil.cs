@@ -6,7 +6,12 @@ namespace ManicMiner.Converter.Lib
 {
     class JsonUtil
     {
-        public static string MakeFrom(RoomParser roomParser, WillyStartParser willyStartParser, TravelatorParser travelatorParser, ExitParser exitParser, KeyParser keyParser)
+        public static string MakeFrom(RoomParser roomParser,
+                                      WillyStartParser willyStartParser,
+                                      TravelatorParser travelatorParser,
+                                      ExitParser exitParser,
+                                      KeyParser keyParser,
+                                      HorizontalBaddiesParser horizontal)
         {
             var file = new MMMapFile
             {
@@ -22,7 +27,8 @@ namespace ManicMiner.Converter.Lib
                     exitPosition = exitParser.Exits[i],
                     keys = keyParser.Keys[i],
                     travelator = travelatorParser.Travelators[i],
-                    willyStart = willyStartParser.WillyStart[i]
+                    willyStart = willyStartParser.WillyStart[i],
+                    horizEnemies = horizontal.Baddies[i]
                 };
             }
 

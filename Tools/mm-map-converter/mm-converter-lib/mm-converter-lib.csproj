@@ -55,6 +55,7 @@
     <Compile Include="Models\MMWillyStart.cs" />
     <Compile Include="Parsers\BaseParser.cs" />
     <Compile Include="Parsers\ExitParser.cs" />
+    <Compile Include="Parsers\HorizontalBaddiesParser.cs" />
     <Compile Include="Parsers\KeyParser.cs" />
     <Compile Include="Parsers\RoomParser.cs" />
     <Compile Include="Parsers\TravelatorParser.cs" />
