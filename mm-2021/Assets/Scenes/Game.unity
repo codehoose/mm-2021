@@ -120,6 +120,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &647578455
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 647578456}
+  - component: {fileID: 647578457}
+  m_Layer: 0
+  m_Name: TravelatorSpawn
+  m_TagString: Travelator
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &647578456
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647578455}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1053553843}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &647578457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647578455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45decf55b76e1a74a8f79803f71c863c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _frames: []
+  _roomProvider: {fileID: 1053553842}
 --- !u!1 &697339288
 GameObject:
   m_ObjectHideFlags: 0
@@ -251,10 +296,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1053553843}
+  - component: {fileID: 1053553844}
   - component: {fileID: 1053553842}
   - component: {fileID: 1053553841}
   m_Layer: 0
-  m_Name: BlockRenderer
+  m_Name: RoomController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -318,14 +364,35 @@ MonoBehaviour:
   m_GameObject: {fileID: 1053553840}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95ca717291a3d03489fb13fe0b7981a4, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f4dd501d4eacb043a7079a794cff9b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentRoom:
+    blocks: 
+    name: 
+    border: 0
+    willyStart:
+      pos:
+        x: 0
+        y: 0
+      dir: 0
+    travelator:
+      pos:
+        x: 0
+        y: 0
+      dir: 0
+      len: 0
+    keys: []
+    switches: []
+    exitPosition:
+      x: 0
+      y: 0
+    airCount: 0
+    horizEnemies: []
+    vertEnemies: []
+  _roomID: 0
   _blocks: {fileID: 2800000, guid: eb7955cf0b596c24dbbf899a2abb93cf, type: 3}
   _sprites: {fileID: 2800000, guid: 36bdf53e795278a458c2b558fd5c522f, type: 3}
-  _roomData: {fileID: 4900000, guid: 19a927ca294f1e74f9a989c582cc6779, type: 3}
-  _roomID: 0
-  _debug: 1
   _exitBlock: {fileID: 697339291}
 --- !u!4 &1053553843
 Transform:
@@ -339,9 +406,73 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 697339292}
+  - {fileID: 647578456}
+  - {fileID: 1477313946}
+  - {fileID: 1719675171}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1053553844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1053553840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84e31e879939f2428c6e9b3ce48eb4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _isReady: 0
+  _mapFile:
+    rooms: []
+  _roomID: 0
+  _jsonMapFile: {fileID: 4900000, guid: 19a927ca294f1e74f9a989c582cc6779, type: 3}
+--- !u!1 &1477313945
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1477313946}
+  - component: {fileID: 1477313947}
+  m_Layer: 0
+  m_Name: CrumbleBlockSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1477313946
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477313945}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1053553843}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1477313947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477313945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fffc1036fd41c44baba9ae1214d0c5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _roomProvider: {fileID: 1053553842}
 --- !u!1 &1562445253
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,3 +636,47 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1719675170
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1719675171}
+  - component: {fileID: 1719675172}
+  m_Layer: 0
+  m_Name: KillBlockSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1719675171
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719675170}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1053553843}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1719675172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719675170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b18cb230cd0acd04eb6dc5665e2be3a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _roomProvider: {fileID: 1053553842}

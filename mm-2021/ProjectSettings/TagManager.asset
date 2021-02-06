@@ -8,6 +8,7 @@ TagManager:
   - Crumble
   - Exit
   - Key
+  - Travelator
   layers:
   - Default
   - TransparentFX
