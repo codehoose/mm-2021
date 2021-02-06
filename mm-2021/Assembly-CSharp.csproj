@@ -64,7 +64,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\BlockRenderer.cs" />
     <Compile Include="Assets\Scripts\CrumbleBlockProvider.cs" />
     <Compile Include="Assets\Scripts\DasBoot.cs" />
     <Compile Include="Assets\Scripts\EventArgs\PositionalEventArgs.cs" />
@@ -80,6 +79,9 @@
     <Compile Include="Assets\Scripts\Models\MMWillyStart.cs" />
     <Compile Include="Assets\Scripts\RoomController.cs" />
     <Compile Include="Assets\Scripts\RoomProvider.cs" />
+    <Compile Include="Assets\Scripts\SpectrumFont.cs" />
+    <Compile Include="Assets\Scripts\StaticText.cs" />
+    <Compile Include="Assets\Scripts\TextData.cs" />
     <Compile Include="Assets\Scripts\TravelatorAnimator.cs" />
     <Compile Include="Assets\Scripts\TravilatorAnimator.cs" />
     <Compile Include="Assets\Scripts\Utils\SpriteUtil.cs" />

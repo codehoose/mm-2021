@@ -41,4 +41,14 @@ public static class SpriteUtil
         tex.filterMode = FilterMode.Point;
         return tex;
     }
+
+    public static void Clear(this Texture2D tex, Color color)
+    {
+        Color[] clear = new Color[tex.width * tex.height];
+        for (int i = 0; i < clear.Length; i++)
+            clear[i] = color;
+
+        tex.SetPixels(clear);
+        tex.Apply();
+    }
 }
