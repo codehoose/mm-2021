@@ -1,5 +1,5 @@
 [ ] Convert data over to JSON
-[ ] Import graphics into Unity & create sprite sheets
+[X] Import graphics into Unity & create sprite sheets
 [ ] Import map data
 [ ] Render map
 [ ] Render conveyor
