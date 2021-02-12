@@ -10,7 +10,6 @@ public class HorizontalBaddies : MonoBehaviour
     public List<MobileObject> _mobs;
     public RoomProvider _roomProvider;
 
-    // Start is called before the first frame update
     IEnumerator Start()
     {
         _mobs = new List<MobileObject>();
@@ -18,11 +17,7 @@ public class HorizontalBaddies : MonoBehaviour
 
         while (true)
         {
-            foreach (var mob in _mobs)
-            {
-                mob.Tick();
-            }
-
+            _mobs.ForEach(m => m.Tick());
             yield return new WaitForSeconds(0.125f);
         }
     }

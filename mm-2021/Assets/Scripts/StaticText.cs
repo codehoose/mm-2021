@@ -26,6 +26,7 @@ public class StaticText : MonoBehaviour
         {
             if (t != text)
             {
+                print(text);
                 t = text;
                 _data.Text = text;
             }
