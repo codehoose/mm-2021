@@ -31,6 +31,17 @@ namespace SK2D.Graphics
             images.Add(image);
         }
 
+        public void Update(float deltaTime)
+        {
+            foreach (var kvp in _layers)
+            {
+                foreach (var image in kvp.Value)
+                {
+                    image.Update(deltaTime);
+                }
+            }
+        }
+
         public void Draw(GameTime gameTime)
         {
             // From https://stackoverflow.com/questions/9215027/nearest-neighbor-zoom

@@ -3,7 +3,7 @@
 namespace ManicMiner.Converter.Lib.Models
 {
     [Serializable]
-    public struct MMMob
+    public class MMMob
     {
         public MMPoint pos;
         public int minPos;

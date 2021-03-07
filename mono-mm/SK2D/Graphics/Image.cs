@@ -43,5 +43,9 @@ namespace SK2D.Graphics
 
             Draw(spriteBatch, Texture, dest, Source);
         }
+
+        public virtual void Update(float deltaTime)
+        {
+        }
     }
 }

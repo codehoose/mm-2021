@@ -10,6 +10,7 @@ namespace MonoManicMiner.States
     {
         private RoomBlocks _roomRenderer;
         private LivesIndicator _lives;
+        private BaddieRenderer _baddieRenderer;
         private Image _air;
         private SpectrumFont _font;
         private MMMapFile _mapFile;
@@ -26,6 +27,7 @@ namespace MonoManicMiner.States
             _roomRenderer = new RoomBlocks(blocks, background, sun);
             _air = StateManager.Game.ContentManager.LoadImage("titleair.bmp");
             _lives = new LivesIndicator(sixteen);
+            _baddieRenderer = new BaddieRenderer(sixteen);
         }
 
         public override void Enter(params object[] args)
@@ -39,12 +41,16 @@ namespace MonoManicMiner.States
             _roomRenderer.MapFile = _mapFile;
             _roomRenderer.Room = roomId;
 
+            _baddieRenderer.SetMapFile(_mapFile, roomId);
+
             StateManager.Game.Renderer.AddImage(_roomRenderer, Layer.Background);
             StateManager.Game.Renderer.AddImage(_air, Layer.UI, 0, 16 * 8);
             StateManager.Game.Renderer.AddImage(_font, Layer.UI, 0, 16 * 8);
             StateManager.Game.Renderer.AddImage(_lives, Layer.UI, 0, 168);
             StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _lives.Frame = frame);
             StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _roomRenderer.KeyAnimFrame = frame);
+
+            StateManager.Game.Renderer.AddImage(_baddieRenderer, Layer.Sprite);
         }
 
         public override void Exit()

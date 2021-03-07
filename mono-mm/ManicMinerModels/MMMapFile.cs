@@ -3,7 +3,7 @@
 namespace ManicMiner.Converter.Lib.Models
 {
     [Serializable]
-    public struct MMMapFile
+    public class MMMapFile
     {
         public MMRoom[] rooms;
     }

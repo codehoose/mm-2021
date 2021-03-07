@@ -3,7 +3,7 @@
 namespace ManicMiner.Converter.Lib.Models
 {
     [Serializable]
-    public struct MMTravelator
+    public class MMTravelator
     {
         public MMPoint pos;
         public int dir;

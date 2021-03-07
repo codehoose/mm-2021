@@ -3,7 +3,7 @@
 namespace ManicMiner.Converter.Lib.Models
 {
     [Serializable]
-    public struct MMRoom
+    public class MMRoom
     {
         public int[] blocks;
         public string name;
