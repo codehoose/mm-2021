@@ -22,9 +22,8 @@ namespace MonoManicMiner.States
             var background = StateManager.Game.ContentManager.LoadTexture("background.png");
             var sixteen = StateManager.Game.ContentManager.LoadTexture("16x16.png");
 
-            _mapFile = StateManager.Game.ContentManager.LoadJson<MMMapFile>("manicminer.json");
             _font = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"), 8);
-            _roomRenderer = new RoomBlocks(blocks, background, sun, _mapFile);
+            _roomRenderer = new RoomBlocks(blocks, background, sun);
             _air = StateManager.Game.ContentManager.LoadImage("titleair.bmp");
             _lives = new LivesIndicator(sixteen);
         }
@@ -32,9 +31,13 @@ namespace MonoManicMiner.States
         public override void Enter(params object[] args)
         {
             var roomId = (int)args[0];
-            _roomRenderer.Room = roomId;
+            
             _font.Text = _mapFile.rooms[roomId].name;
             _lives.Lives = 6;
+            _mapFile = StateManager.Game.ContentManager.LoadJson<MMMapFile>("manicminer.json");
+
+            _roomRenderer.MapFile = _mapFile;
+            _roomRenderer.Room = roomId;
 
             StateManager.Game.Renderer.AddImage(_roomRenderer, Layer.Background);
             StateManager.Game.Renderer.AddImage(_air, Layer.UI, 0, 16 * 8);
@@ -45,6 +48,12 @@ namespace MonoManicMiner.States
             {
                 _lives.Frame += 1;
                 _lives.Frame %= 3;
+            });
+
+            StateManager.Game.Tweens.Add(0.2f, () =>
+            {
+                _roomRenderer.KeyAnimFrame += 1;
+                _roomRenderer.KeyAnimFrame %= 3;
             });
         }
 
