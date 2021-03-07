@@ -32,9 +32,9 @@ namespace MonoManicMiner.States
         {
             var roomId = (int)args[0];
             
+            _mapFile = StateManager.Game.ContentManager.LoadJson<MMMapFile>("manicminer.json");
             _font.Text = _mapFile.rooms[roomId].name;
             _lives.Lives = 6;
-            _mapFile = StateManager.Game.ContentManager.LoadJson<MMMapFile>("manicminer.json");
 
             _roomRenderer.MapFile = _mapFile;
             _roomRenderer.Room = roomId;
