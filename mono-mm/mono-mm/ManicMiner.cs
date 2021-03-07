@@ -1,6 +1,5 @@
 ﻿using MonoManicMiner.States;
 using SK2D;
-using SK2D.Graphics;
 
 namespace MonoManicMiner
 {
