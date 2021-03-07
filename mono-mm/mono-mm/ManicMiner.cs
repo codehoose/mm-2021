@@ -13,7 +13,7 @@ namespace MonoManicMiner
         {
             StateManager.Register<TitleScreenState>("title");
             StateManager.Register<GameState>("game");
-            StateManager.ChangeState("game", 2);
+            StateManager.ChangeState("game", 0);
         }
     }
 }

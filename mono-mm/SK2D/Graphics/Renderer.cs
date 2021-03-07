@@ -19,7 +19,7 @@ namespace SK2D.Graphics
             _spriteBatch = spriteBatch;
         }
 
-        public void AddImage(Image image, Layer layer, int x = 0, int y = 0)
+        public void AddImage(Image image, Layer layer)
         {
             if (!_layers.TryGetValue(layer, out List<Image> images))
             {
@@ -27,8 +27,13 @@ namespace SK2D.Graphics
                 _layers[layer] = images;
             }
 
-            image.Position = new Vector2(x, y);
             images.Add(image);
+        }
+
+        public void AddImage(Image image, Layer layer, int x, int y)
+        {
+            image.Position = new Vector2(x, y);
+            AddImage(image, layer);
         }
 
         public void Update(float deltaTime)
