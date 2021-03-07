@@ -43,18 +43,8 @@ namespace MonoManicMiner.States
             StateManager.Game.Renderer.AddImage(_air, Layer.UI, 0, 16 * 8);
             StateManager.Game.Renderer.AddImage(_font, Layer.UI, 0, 16 * 8);
             StateManager.Game.Renderer.AddImage(_lives, Layer.UI, 0, 168);
-
-            StateManager.Game.Tweens.Add(0.2f, () =>
-            {
-                _lives.Frame += 1;
-                _lives.Frame %= 3;
-            });
-
-            StateManager.Game.Tweens.Add(0.2f, () =>
-            {
-                _roomRenderer.KeyAnimFrame += 1;
-                _roomRenderer.KeyAnimFrame %= 3;
-            });
+            StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _lives.Frame = frame);
+            StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _roomRenderer.KeyAnimFrame = frame);
         }
 
         public override void Exit()

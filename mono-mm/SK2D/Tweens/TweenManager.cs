@@ -14,6 +14,19 @@ namespace SK2D.Tweens
             return tween;
         }
 
+        public Tween AddClamp(float tick, int min, int max, Action<int> setter)
+        {
+            var i = min;
+            var tween = new Tween(tick, () =>
+            {
+                i++;
+                i %= max;
+                setter(i);
+            });
+            _tweens.Add(tween);
+            return tween;
+        }
+
         public void Remove(Tween tween)
         {
             if (_tweens.Contains(tween))
