@@ -4,7 +4,7 @@ namespace SK2D.StateMachine
 {
     public interface IState
     {
-        void Enter();
+        void Enter(params object[] args);
 
         void Exit();
 

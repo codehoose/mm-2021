@@ -8,7 +8,7 @@ namespace SK2D.StateMachine
 
         void Register<T>(string stateName) where T : BaseState;
 
-        void ChangeState(string stateName);
+        void ChangeState(string stateName, params object[] args);
 
         void Run(GameTime gameTime);
     }

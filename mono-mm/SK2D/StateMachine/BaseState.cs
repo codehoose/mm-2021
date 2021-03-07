@@ -11,7 +11,7 @@ namespace SK2D.StateMachine
             StateManager = stateManager;
         }
 
-        public abstract void Enter();
+        public abstract void Enter(params object[] args);
 
         public virtual void Exit()
         {

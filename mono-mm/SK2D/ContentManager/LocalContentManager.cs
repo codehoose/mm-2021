@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using SK2D.ContentManager.ResourceBuckets;
 using SK2D.Graphics;
 using System;
@@ -19,6 +20,7 @@ namespace SK2D.ContentManager
             _game = game;
             _root = _game.Content.RootDirectory;
             _buckets.Add(typeof(Texture2D), new TextureResourceBucket(game, Path.Combine(_root, "images")));
+            _buckets.Add(typeof(string), new TextAssetResouceBucket(game, Path.Combine(_root, "json")));
         }
 
         public Texture2D LoadTexture(string name)
@@ -42,6 +44,12 @@ namespace SK2D.ContentManager
         {
             var texture = _buckets[typeof(Texture2D)].Get(name) as Texture2D;
             return new TileImage(texture, cellSize);
+        }
+
+        public T LoadJson<T>(string name)
+        {
+            var json = _buckets[typeof(string)].Get(name) as string;
+            return JsonConvert.DeserializeObject<T>(json);
         }
     }
 }

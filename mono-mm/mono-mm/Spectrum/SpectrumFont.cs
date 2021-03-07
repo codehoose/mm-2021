@@ -37,18 +37,9 @@ namespace MonoManicMiner.Spectrum
                 {
                     var ord = Text[x] - ' ';
                     SetFrame(ord + colourOffset);
-
-                    spriteBatch.Draw(Texture,
-                                     dest,
-                                     Source,
-                                     Color.White,
-                                     0,
-                                     Vector2.Zero,
-                                     SpriteEffects.None, 0);
+                    Draw(spriteBatch, Texture, dest, Source);
                 }
             }
-
-
         }
     }
 }

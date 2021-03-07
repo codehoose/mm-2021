@@ -24,14 +24,14 @@ namespace SK2D
             _states.Add(stateName, instance);
         }
 
-        public void ChangeState(string stateName)
+        public void ChangeState(string stateName, params object[] args)
         {
             _currentState?.Exit();
 
             if (_states.ContainsKey(stateName))
             {
                 _currentState = _states[stateName];
-                _currentState.Enter();
+                _currentState.Enter(args);
             }
         }
 

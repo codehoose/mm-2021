@@ -47,22 +47,18 @@ namespace SK2D.Graphics
                     foreach (var image in _layers[layer])
                     {
                         image.Draw(_spriteBatch, Scale);
-
-                        //var dest = new Rectangle((int)(image.Position.X * Scale),
-                        //                         (int)(image.Position.Y * Scale),
-                        //                         (int)(image.Size.X * image.Scale * Scale),
-                        //                         (int)(image.Size.Y * image.Scale * Scale));
-                        //_spriteBatch.Draw(image.Texture,
-                        //                  dest,
-                        //                  image.Source,
-                        //                  Color.White,
-                        //                  0,
-                        //                  Vector2.Zero,
-                        //                  SpriteEffects.None, 0);
                     }
                 }
             }
             _spriteBatch.End();
+        }
+
+        public void Clear()
+        {
+            foreach (var kvp in _layers)
+            {
+                kvp.Value.Clear();
+            }
         }
     }
 }

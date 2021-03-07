@@ -15,6 +15,18 @@ namespace SK2D.Graphics
 
         public Rectangle Source { get; protected set; }
 
+        public static void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle dest, Rectangle source)
+        {
+            spriteBatch.Draw(texture,
+                             dest,
+                             source,
+                             Color.White,
+                             0,
+                             Vector2.Zero,
+                             SpriteEffects.None,
+                             0);
+        }
+
         public Image(Texture2D texture)
         {
             Texture = texture;
@@ -28,13 +40,8 @@ namespace SK2D.Graphics
                                      (int)(Position.Y * scale),
                                      (int)(Size.X * Scale * scale),
                                      (int)(Size.Y * Scale * scale));
-            spriteBatch.Draw(Texture,
-                             dest,
-                             Source,
-                             Color.White,
-                             0,
-                             Vector2.Zero,
-                             SpriteEffects.None, 0);
+
+            Draw(spriteBatch, Texture, dest, Source);
         }
     }
 }

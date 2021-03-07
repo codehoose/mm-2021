@@ -12,11 +12,9 @@ namespace MonoManicMiner
 
         protected override void Boot()
         {
-            //var background = ContentManager.LoadImage("background.png");
-            //Renderer.AddImage(background, Layer.Background);
-
             StateManager.Register<TitleScreenState>("title");
-            StateManager.ChangeState("title");
+            StateManager.Register<GameState>("game");
+            StateManager.ChangeState("game", 0);
         }
     }
 }
