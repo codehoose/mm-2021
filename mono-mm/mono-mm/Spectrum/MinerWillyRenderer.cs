@@ -20,6 +20,7 @@ namespace MonoManicMiner.Spectrum
         private int _y;
 
         private float _time;
+        private int _jp;
 
         public MinerWillyRenderer(Texture2D texture)
             : base(texture, 16)
@@ -139,7 +140,126 @@ namespace MonoManicMiner.Spectrum
 
         private void DoWillyJump()
         {
+            //         jp = ((cWILLYj And 254)-8)/ 2
+            _jp = ((_j & 254) - 2) / 2;
+            // cWILLYy = (cWILLYy + jp)
+            _y = _y + _jp;
 
+            // If cWILLYj<8
+            if (_j < 8)
+            {
+                //     blk1 = GetBlock(cWILLYx, cWILLYy)
+                //     blk2 = GetBlock(cWILLYx + 8, cWILLYy)
+                var block1 = GetBlock(_x, _y);
+                var block2 = GetBlock(_x + 8, _y);
+
+
+                //     If blk1 = 3 Or blk2 = 3
+                if (block1 == 3 || block2 == 3)
+                {
+                    _state = 4;
+                    _js = 0;
+                    //         cWILLYm = 4
+
+                    //         cWILLYjs = 0
+
+                    //         cWILLYy = (cWILLYy + 8) And 248
+                    _y = (_y + 8) & 248;
+                    //     End If
+                }
+                // End If
+            }
+
+            // If cWILLYj> 11
+            if (_j > 11)
+            {
+                //     If(cWILLYy And 7) = 0
+                if ((_y & 7) == 0)
+                {
+                    var block1 = GetBlock(_x, _y + 16);
+                    var block2 = GetBlock(_x + 8, _y + 16);
+                    if (block1 != 0 || block2 != 0)
+                    //         blk1 = GetBlock(cWILLYx, cWILLYy + 16)
+
+                    //         blk2 = GetBlock(cWILLYx + 8, cWILLYy + 16)
+
+                    //         If blk1<>0 Or blk2<>0
+                    {
+                        _state = 0;
+                        _j = 0;
+                        _y = _y & 248;
+                        //             cWILLYm = 0
+
+                        //             cWILLYj = 0
+
+                        //             cWILLYy = (cWILLYy And 248)
+                        //End If
+                    }
+                }
+                //     End If
+
+                // End If
+            }
+
+
+            // cWILLYj = cWILLYj + 1
+            _j++;
+
+            // If cWILLYj = 18
+            if (_j == 18)
+            {
+                _state = 0;
+                _j = 0;
+                CheckWillyFall();
+
+
+                //     cWILLYm = 0
+
+                //     cWILLYj = 0
+
+                //     CheckWillyFall()
+
+                // End If
+            }
+
+
+            // If cWILLYj<11
+            if (_j < 11)
+            {
+                //     cWILLYjs = cWILLYjs + 1
+                _js++;
+            }
+            else
+            // Else
+            {
+                if (_j > 10)
+                {
+                    //     If cWILLYj > 10
+                    _js--;
+                    //         cWILLYjs = cWILLYjs - 1
+                }
+                //     End If
+            }
+            // End If
+
+
+            // If cWILLYj> 12
+            if (_j > 12)
+            {
+                //     cWILLYfall = (cWILLYfall + jp)
+                _willyFall = _willyFall + _jp;
+            }
+            // End If
+
+
+            // If cWILLYm<>0
+            if (_state != 0)
+            {
+                //     SoundPitch SFXjump,16384 + (cWILLYjs * 1500)
+
+                //     PlaySound SFXjump
+            }
+   // End If
         }
 
         private void DoNormalMovement(int input)
@@ -256,7 +376,61 @@ namespace MonoManicMiner.Spectrum
                 case 0:
                     DoNormalMovement(input);
                     break;
+                case 1:
+                    DoWillyJump();
+                    break;
+                case 2:
+                    DoWillyLeft();
+                    DoWillyJump();
+                    break;
+
+                case 3:
+                    DoWillyRight();
+                    DoWillyJump();
+                    break;
+                case 4:
+                    DoWillyFall();
+                    break;
+                case 6:
+                    DoDeath();
+                    break;
+                //		Case	4
+                //			DoWillyFall()
+                //		Case	6
+                //			DoDeath()
+
             }
+
+            CheckKeys();
+            CheckExit();
+            CheckSwitches();
+
+
+        }
+
+        private void CheckSwitches()
+        {
+            
+        }
+
+        private void CheckExit()
+        {
+         
+        }
+
+        private void CheckKeys()
+        {
+            
+        }
+
+        private void DoDeath()
+        {
+            
+        }
+
+        private void DoWillyFall()
+        {
+            
         }
 
         //	Select cWILLYm
