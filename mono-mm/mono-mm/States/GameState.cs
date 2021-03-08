@@ -44,7 +44,7 @@ namespace MonoManicMiner.States
             _roomRenderer.Room = roomId;
 
             _baddieRenderer.SetMapFile(_mapFile, roomId);
-            _willy.Init(_mapFile.rooms[roomId].willyStart);
+            _willy.Init(_mapFile, roomId);
 
             StateManager.Game.Renderer.AddImage(_roomRenderer, Layer.Background);
             StateManager.Game.Renderer.AddImage(_air, Layer.UI, 0, 16 * 8);
