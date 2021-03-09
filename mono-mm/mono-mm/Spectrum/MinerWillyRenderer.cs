@@ -71,7 +71,22 @@ namespace MonoManicMiner.Spectrum
 
         private void CheckWillyFall()
         {
-            
+            //        blk1 = GetBlock(cWILLYx, cWILLYy + 16)
+            var block1 = GetBlock(_x, _y + 16);
+            //blk2 = GetBlock(cWILLYx + 8, cWILLYy + 16)
+            var block2 = GetBlock(_x + 8, _y + 16);
+
+    //If blk1 = 0 And blk2 = 0
+            if (block1 == 0 && block2 == 0)
+            {
+                //    cWILLYm = 4
+                _state = 4;
+                //    cWILLYjs = 0
+                _js = 0;
+            }
+
+
+            //End If
         }
 
         private void CheckCrumb()
@@ -149,10 +164,10 @@ namespace MonoManicMiner.Spectrum
             if (_j < 8)
             {
                 //     blk1 = GetBlock(cWILLYx, cWILLYy)
-                //     blk2 = GetBlock(cWILLYx + 8, cWILLYy)
                 var block1 = GetBlock(_x, _y);
-                var block2 = GetBlock(_x + 8, _y);
+                //     blk2 = GetBlock(cWILLYx + 8, cWILLYy)
 
+                var block2 = GetBlock(_x + 8, _y);
 
                 //     If blk1 = 3 Or blk2 = 3
                 if (block1 == 3 || block2 == 3)
@@ -423,94 +438,50 @@ namespace MonoManicMiner.Spectrum
 
         private void DoWillyFall()
         {
-            
+            //          cWILLYy = cWILLYy + 4
+            _y += 4;
+            //  blk1 = GetBlock(cWILLYx, cWILLYy + 16)
+            var block1 = GetBlock(_x, _y + 16);
+            //  blk2 = GetBlock(cWILLYx + 8, cWILLYy + 16)
+            var block2 = GetBlock(_x + 8, _y + 16);
+
+            //  If blk1<>0 Or blk2<>0
+            if (block1 != 0 || block2 != 0)
+            {
+                //      cWILLYy = (cWILLYy And 248)
+                _y &= 248;
+   
+                //cWILLYm = 0
+                _state = 0;
+                //      If cWILLYfall>= 32
+                if (_willyFall >= 32)
+                {
+                    //          cWILLYm = 6
+                    _state = 6;
+                }
+                else //      Else
+                {
+                    //          cWILLYfall = 0
+                    _willyFall = 0;
+                }
+                //      End If
+
+
+            }
+            else
+            {
+                //  Else
+                //      cWILLYfall = cWILLYfall + 4
+                _willyFall += 4;
+                //  End If
+            }
+            //  cWILLYjs = (cWILLYjs + 1) Mod 11
+            _js = (_js + 1) % 11;
+
+            //  SoundPitch SFXjump,16384 - (cWILLYjs * 1000)
+            Position = new Vector2(_x & 248, _y);
+
+          //  PlaySound SFXjump
         }
-
-        //	Select cWILLYm
-        //		Case	0
-        //			CheckCrumb()
-        //;---------------------------------------
-        //			If INKEY = 1
-        //				DoWillyLeft()
-        //				cWILLYfall=0
-        //			Else
-        //;---------------------------------------
-        //				If INKEY = 2
-        //					DoWillyRight()
-        //					cWILLYfall=0
-        //				Else
-        //;---------------------------------------
-        //					If INKEY = 4
-        //						cWILLYm=1
-        //						cWILLYj=0
-        //						cWILLYjs=0
-        //						cWILLYfall=0
-        //						DoWillyJump()
-        //					Else
-        //;---------------------------------------
-        //						If INKEY = 5
-        //							If cWILLYd = 0
-        //								cWILLYd=1
-        //								cWILLYm=1
-        //								cWILLYj=0
-        //								cWILLYjs=0
-        //								cWILLYfall=0
-        //								DoWillyJump()
-        //							Else
-        //								cWILLYm = 2
-        //								cWILLYj=0
-        //								cWILLYjs=0
-        //								cWILLYfall=0
-        //								DoWillyLeft()
-        //								DoWillyJump()
-        //							End If
-        //						Else
-        //;---------------------------------------
-        //							If INKEY = 6
-        //								If cWILLYd = 1
-        //									cWILLYd=0
-        //									cWILLYm=1
-        //									cWILLYj=0
-        //									cWILLYjs=0
-        //									cWILLYfall=0
-        //									DoWillyJump()
-        //								Else
-        //									cWILLYm = 3
-        //									cWILLYj=0
-        //									cWILLYjs=0
-        //									cWILLYfall=0
-        //									DoWillyRight()
-        //									DoWillyJump()
-        //								End If
-        //;---------------------------------------
-        //							Else
-        //									cWILLYjs = 0
-        //									cWILLYfall=0
-        //							End If
-        //						End If
-        //					End If
-        //				End If
-        //			End If
-        //		Case	1
-        //			DoWillyJump()
-        //		Case	2
-        //			DoWillyLeft()
-        //			DoWillyJump()
-        //		Case	3
-        //			DoWillyRight()
-        //			DoWillyJump()
-        //		Case	4
-        //			DoWillyFall()
-        //		Case	6
-        //			DoDeath()
-        //	End Select
-        //	CheckKeys()
-        //	CheckExit()
-        //	CheckSwitches()
-        //	DrawWilly()
-        //End Function
-
-
-
     }
 }
