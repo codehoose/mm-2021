@@ -10,8 +10,7 @@ namespace MonoManicMiner.Spectrum
     public class MinerWillyRenderer : SpriteSheet
     {
         private int dir;
-        private MMMapFile _mapFile;
-        private int _room;
+        private MMRoom _room;
         private int _willyFall;
         private int _state; // cWillym
         private int _j;
@@ -28,12 +27,10 @@ namespace MonoManicMiner.Spectrum
             
         }
 
-        public void Init(MMMapFile mapFile, int room)
+        public void SetRoom(MMRoom room)
         {
-            _mapFile = mapFile;
             _room = room;
-
-            var start = _mapFile.rooms[room].willyStart;
+            var start = _room.willyStart;
 
             Position = new Vector2(start.pos.x, start.pos.y);
             dir = start.dir;
@@ -96,7 +93,7 @@ namespace MonoManicMiner.Spectrum
 
         private int GetBlock(int x, int y)
         {
-            var roomBlocks = _mapFile.rooms[_room].blocks;
+            var roomBlocks = _room.blocks;
             var offset = ((y / 8) * 32) + (x / 8);
             return roomBlocks[offset];
         }

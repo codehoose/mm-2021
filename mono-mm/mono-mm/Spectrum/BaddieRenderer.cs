@@ -10,8 +10,7 @@ namespace MonoManicMiner.Spectrum
     {
         private readonly Dictionary<MMMob, int> _horizonalMobs = new Dictionary<MMMob, int>();
 
-        private MMMapFile _mapFile;
-        private int _room;
+        private MMRoom _room;
         private float _time;
 
         public float AnimSpeed { get; set; } = 0.1f;
@@ -21,15 +20,12 @@ namespace MonoManicMiner.Spectrum
         {
         }
 
-        public void SetMapFile(MMMapFile mapFile, int room)
+        public void SetRoom(MMRoom room)
         {
-            _mapFile = mapFile;
             _room = room;
-
             _horizonalMobs.Clear();
 
-            var rm = _mapFile.rooms[_room];
-            foreach (var horiz in rm.horizEnemies)
+            foreach (var horiz in room.horizEnemies)
             {
                 var x = horiz.pos.x;
                 var blockId = horiz.graphic + (x & horiz.ani) / 2;
@@ -57,16 +53,14 @@ namespace MonoManicMiner.Spectrum
 
             _time -= AnimSpeed;
 
-            var room = _mapFile.rooms[_room];
-
-            foreach (var robot in room.horizEnemies)
+            foreach (var robot in _room.horizEnemies)
             {
                 var x = robot.pos.x;
                 var y = robot.pos.y;
 
                 if (robot.dir == 1)
                 {
-                    x = x - robot.speed;
+                    x -= robot.speed;
                     var blockId = robot.graphic + (x & robot.ani) / 2;
                     if (x <= robot.minPos)
                     {
@@ -99,9 +93,7 @@ namespace MonoManicMiner.Spectrum
 
         private void DrawHorizontals(SpriteBatch spriteBatch, float scale)
         {
-            var room = _mapFile.rooms[_room];
-
-            foreach(var robot in room.horizEnemies)
+            foreach(var robot in _room.horizEnemies)
             {
                 var blockId = _horizonalMobs[robot];
                 var x = robot.pos.x & 248; // Clamp to the 8x8 blocks

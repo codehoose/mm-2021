@@ -10,27 +10,32 @@ namespace MonoManicMiner.Spectrum
         private readonly Texture2D _background;
         private readonly Texture2D _sun;
         private int _conveyorFrame;
+        private MMRoom _room;
+        private int _roomId;
         private float _time;
 
-        public int Room { get; set; }
+        
         public int KeyAnimFrame { get; set; }
-        public MMMapFile MapFile { get; set; }
+        
 
-        public RoomBlocks(Texture2D texture, Texture2D background, Texture2D sun, int initialRoom = 0)
+        public RoomBlocks(Texture2D texture, Texture2D background, Texture2D sun)
             : base(texture, 8)
         {
-            Room = initialRoom;
             _background = background;
             _sun = sun;
         }
 
+        public void SetRoom(MMRoom room, int roomID)
+        {
+            _room = room;
+            _roomId = roomID;
+        }
+
         public override void Draw(SpriteBatch spriteBatch, float scale)
         {
-            var blockOffset = Room * 16;
-            var room = MapFile.rooms[Room];
-
-            DrawRoom(spriteBatch, scale, blockOffset, room);
-            DrawKeys(spriteBatch, scale, blockOffset, room);
+            var blockOffset = _roomId * 16;
+            DrawRoom(spriteBatch, scale, blockOffset, _room);
+            DrawKeys(spriteBatch, scale, blockOffset, _room);
         }
 
         private void DrawKeys(SpriteBatch spriteBatch, float scale, int blockOffset, MMRoom room)
@@ -94,7 +99,7 @@ namespace MonoManicMiner.Spectrum
             // Draw Conveyor...
             DrawConveyor(spriteBatch, blockOffset, (int)scale);
 
-            if (Room == 20)
+            if (_roomId == 20)
             {
                 Draw(spriteBatch, _background, _background.Bounds, _background.Bounds);
                 Draw(spriteBatch, _sun, new Rectangle(60, 32, _sun.Width, _sun.Height), _sun.Bounds);
@@ -103,7 +108,7 @@ namespace MonoManicMiner.Spectrum
 
         private void DrawConveyor(SpriteBatch spriteBatch, int blockOffset, int scale)
         {
-            var travelator = MapFile.rooms[Room].travelator;
+            var travelator = _room.travelator;
 
             for (var x = 0; x < travelator.len; x++)
             {
@@ -136,39 +141,11 @@ namespace MonoManicMiner.Spectrum
 
             _time -= 0.1f;
 
-            var travelator = MapFile.rooms[Room].travelator;
-            //        If cCONVl> 0
+            var travelator = _room.travelator;
             if (travelator.len > 0)
             {
-
-                //    For x = 0 To(cCONVl - 1)
-                //for (var x = 0; x < travelator.len; x++)
-                //{
-
-                //    //        DrawBlock(imageBLOCKS, cCONVx + (x * 8), cCONVy, (BLOCKoff + 7) + cCONVanim)
-
-                //    //    Next
-                //}
-
-                if (travelator.dir == 1)
-                {
-                    _conveyorFrame = (_conveyorFrame + 1) & 3;
-                }
-                else
-                {
-                    _conveyorFrame = (_conveyorFrame - 1) & 3;
-                }
-
-                //    If Not cCONVd
-
-                //        cCONVanim = (cCONVanim + 1) And 3
-
-                //    Else
-                //        cCONVanim = (cCONVanim - 1) And 3
-
-                //    End If
-
-                //End If
+                var tick = travelator.dir > 0 ? 1 : -1;
+                _conveyorFrame = (_conveyorFrame + tick) & 3;
             }
         }
     }

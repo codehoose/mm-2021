@@ -40,11 +40,12 @@ namespace MonoManicMiner.States
             _font.Text = _mapFile.rooms[roomId].name;
             _lives.Lives = 6;
 
-            _roomRenderer.MapFile = _mapFile;
-            _roomRenderer.Room = roomId;
+            var room = _mapFile.rooms[roomId].Copy();
 
-            _baddieRenderer.SetMapFile(_mapFile, roomId);
-            _willy.Init(_mapFile, roomId);
+            _roomRenderer.SetRoom(room, roomId);
+
+            _baddieRenderer.SetRoom(room);
+            _willy.SetRoom(room);
 
             StateManager.Game.Renderer.AddImage(_roomRenderer, Layer.Background);
             StateManager.Game.Renderer.AddImage(_air, Layer.UI, 0, 16 * 8);
