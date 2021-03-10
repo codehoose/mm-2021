@@ -1,5 +1,4 @@
 ﻿using ManicMiner.Converter.Lib.Models;
-using Microsoft.Xna.Framework;
 using MonoManicMiner.Spectrum;
 using SK2D.Graphics;
 using SK2D.StateMachine;
@@ -64,11 +63,6 @@ namespace MonoManicMiner.States
         public override void Exit()
         {
             StateManager.Game.Renderer.Clear();
-        }
-
-        public override void Run(GameTime gameTime)
-        {
-            
         }
     }
 }

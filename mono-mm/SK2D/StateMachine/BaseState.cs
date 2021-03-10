@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-
-namespace SK2D.StateMachine
+﻿namespace SK2D.StateMachine
 {
     public abstract class BaseState : IState
     {
@@ -18,6 +16,9 @@ namespace SK2D.StateMachine
             
         }
 
-        public abstract void Run(GameTime gameTime);
+        public virtual void Run(float deltaTime)
+        {
+
+        }
     }
 }

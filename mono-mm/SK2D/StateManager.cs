@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using SK2D.StateMachine;
+﻿using SK2D.StateMachine;
 using System;
 using System.Collections.Generic;
 
@@ -35,9 +34,9 @@ namespace SK2D
             }
         }
 
-        public void Run(GameTime gameTime)
+        public void Run(float deltaTime)
         {
-            _currentState?.Run(gameTime);
+            _currentState?.Run(deltaTime);
         }
     }
 }

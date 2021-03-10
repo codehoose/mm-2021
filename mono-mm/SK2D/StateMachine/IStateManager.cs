@@ -10,6 +10,6 @@ namespace SK2D.StateMachine
 
         void ChangeState(string stateName, params object[] args);
 
-        void Run(GameTime gameTime);
+        void Run(float deltaTime);
     }
 }

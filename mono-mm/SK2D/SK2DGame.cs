@@ -69,7 +69,8 @@ namespace SK2D
 
             Tweens.Tick(deltaTime);
             Renderer.Update(deltaTime);
-            StateManager.Run(gameTime);
+            StateManager.Run(deltaTime);
+
             base.Update(gameTime);
         }
 

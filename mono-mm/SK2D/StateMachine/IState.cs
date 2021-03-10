@@ -8,6 +8,6 @@ namespace SK2D.StateMachine
 
         void Exit();
 
-        void Run(GameTime gameTime);
+        void Run(float deltaTime);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using MonoManicMiner.Spectrum;
 using SK2D.Graphics;
 using SK2D.StateMachine;
@@ -16,6 +17,7 @@ namespace MonoManicMiner.States
         private readonly Image _piano;
         private SpectrumFont _font;
         private int _minScrollPos;
+        private int _startLevel;
         private Tween _tween;
 
         public TitleScreenState(IStateManager stateManager)
@@ -61,9 +63,13 @@ namespace MonoManicMiner.States
             StateManager.Game.Renderer.Clear();
         }
 
-        public override void Run(GameTime gameTime)
+        public override void Run(float deltaTime)
         {
-            
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+            {
+                StateManager.ChangeState("game", _startLevel);
+            }
+            base.Run(deltaTime);
         }
     }
 }
