@@ -12,7 +12,7 @@ namespace SK2D.Graphics
 
         private readonly SpriteBatch _spriteBatch;
 
-        public float Scale { get; set; } = 1f;
+        public int Scale { get; set; } = 1;
 
         public Renderer(SpriteBatch spriteBatch)
         {

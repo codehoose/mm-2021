@@ -14,9 +14,7 @@ namespace MonoManicMiner.Spectrum
         private int _roomId;
         private float _time;
 
-        
-        public int KeyAnimFrame { get; set; }
-        
+        public int KeyAnimFrame { get; set; }        
 
         public RoomBlocks(Texture2D texture, Texture2D background, Texture2D sun)
             : base(texture, 8)
@@ -31,7 +29,7 @@ namespace MonoManicMiner.Spectrum
             _roomId = roomID;
         }
 
-        public override void Draw(SpriteBatch spriteBatch, float scale)
+        public override void Draw(SpriteBatch spriteBatch, int scale)
         {
             var blockOffset = _roomId * 16;
             DrawRoom(spriteBatch, scale, blockOffset, _room);
@@ -46,40 +44,10 @@ namespace MonoManicMiner.Spectrum
                 var keyAnimFrame = blockOffset + 11 + KeyAnimFrame;
                 DrawBlock(spriteBatch, (int)(key.x * scale), (int)(key.y * scale), keyAnimFrame, (int)scale);
             }
-
-    //        count = 0
-
-    //For i = 1 To 5
-
-    //    If cKEYSs(i)= 1
-
-    //        DrawImage(imageBLOCKS, cKEYSx(i), cKEYSy(i), (BLOCKoff + 11) + cKEYSb(i))
-
-    //        count = count + 1
-
-    //        cKEYSbp(i) = cKEYSbp(i) + 1
-
-    //        If cKEYSbp(i)= 2
-
-    //            cKEYSb(i) = (cKEYSb(i) + 1) And 3
-
-    //            cKEYSbp(i) = 0
-
-    //        End If
-
-    //    End If
-
-    //Next
-    //If count = 0
-
-    //    cEXITs = 1
-
-    //End If
         }
 
-        private void DrawRoom(SpriteBatch spriteBatch, float scale, int blockOffset, MMRoom room)
+        private void DrawRoom(SpriteBatch spriteBatch, int scale, int blockOffset, MMRoom room)
         {
-
             for (int y = 0; y < 16; y++)
             {
                 for (int x = 0; x < 32; x++)
@@ -87,7 +55,7 @@ namespace MonoManicMiner.Spectrum
                     var blockId = room.blocks[(y * 32) + x];
                     if (blockId == 4)
                     {
-                        DrawBlock(spriteBatch, (int)(x * 8 * scale), (int)(y * 8 * scale), blockOffset, (int)scale);
+                        DrawCrumbling(spriteBatch, x, y, blockOffset, (int)scale);
                     }
                     else if (blockId != 7)
                     {
@@ -96,7 +64,6 @@ namespace MonoManicMiner.Spectrum
                 }
             }
 
-            // Draw Conveyor...
             DrawConveyor(spriteBatch, blockOffset, (int)scale);
 
             if (_roomId == 20)
@@ -104,6 +71,24 @@ namespace MonoManicMiner.Spectrum
                 Draw(spriteBatch, _background, _background.Bounds, _background.Bounds);
                 Draw(spriteBatch, _sun, new Rectangle(60, 32, _sun.Width, _sun.Height), _sun.Bounds);
             }
+        }
+
+        private void DrawCrumbling(SpriteBatch spriteBatch, int x, int y, int blockOffset, int scale)
+        {
+            var height = _room.crumbs[y * 32 + x];
+            var yoff = (8 - height);
+            var dest = new Rectangle(x * 8 * scale, ((y * 8) + yoff) * scale, CellSize * scale, height * scale);
+            SetFrame(blockOffset + 4);
+            var source = new Rectangle(Source.X, Source.Y, Source.Width, height);
+
+            spriteBatch.Draw(Texture,
+                             dest,
+                             source,
+                             Color.White,
+                             0,
+                             Vector2.Zero,
+                             SpriteEffects.None,
+                             0);
         }
 
         private void DrawConveyor(SpriteBatch spriteBatch, int blockOffset, int scale)

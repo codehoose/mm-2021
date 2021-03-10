@@ -17,9 +17,13 @@ namespace ManicMiner.Converter.Lib.Models
         public MMMob[] horizEnemies;
         public MMMob[] vertEnemies;
 
+        [NonSerialized]
+        public int[] crumbs;
+
         public MMRoom Copy()
         {
             var room = new MMRoom();
+            room.crumbs = new int[16 * 32];
             if (blocks.Length > 0)
             {
                 room.blocks = new int[blocks.Length];
@@ -52,6 +56,15 @@ namespace ManicMiner.Converter.Lib.Models
             {
                 room.vertEnemies = new MMMob[vertEnemies.Length];
                 Array.Copy(vertEnemies, room.vertEnemies, vertEnemies.Length);
+            }
+
+            // Copy the crumbs over from the room.
+            for (var i = 0; i < blocks.Length; i++)
+            {
+                if (blocks[i] == 4)
+                {
+                    room.crumbs[i] = 8;
+                }
             }
 
             return room;

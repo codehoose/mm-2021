@@ -88,7 +88,45 @@ namespace MonoManicMiner.Spectrum
 
         private void CheckCrumb()
         {
+            //        blk1 = cCRUMB((cWILLYy / 8) + 3, (cWILLYx / 8) + 1)
+            var block1 = GetCrumb(_x / 8, (_y / 8) + 2);
+            //blk2 = cCRUMB((cWILLYy / 8) + 3, (cWILLYx / 8) + 2)
+            var block2 = GetCrumb(_x / 8 + 1, _y / 8 + 2);
 
+            //If blk1<>0
+            if (block1 != 0)
+            {
+                //    blk1 = blk1 - 1
+                block1--;
+                SetCrumb(_x / 8, (_y / 8) + 2, block1);
+                if (block1 == 0)
+                {
+                    ClearBlock(_x / 8, (_y / 8) + 2);
+                }
+                //    cCRUMB((cWILLYy / 8) + 3, (cWILLYx / 8) + 1) = blk1
+                //    If blk1 = 0
+                //        cROOM((cWILLYy / 8) + 3, (cWILLYx / 8) + 1) = 0
+                //    End If
+                //End If
+            }
+
+            //If blk2<>0
+            if (block2 != 0)
+            {
+                block2--;
+                SetCrumb((_x/ 8) + 1, (_y / 8) + 2, block2);
+                if (block2 == 0)
+                {
+                    ClearBlock((_x / 8) + 1, (_y / 8) + 2);
+                }
+                
+                //    blk2 = blk2 - 1
+                //    cCRUMB((cWILLYy / 8) + 3, (cWILLYx / 8) + 2) = blk2
+                //    If blk2 = 0
+                //        cROOM((cWILLYy / 8) + 3, (cWILLYx / 8) + 2) = 0
+                //    End If
+                //End If
+            }
         }
 
         private int GetBlock(int x, int y)
@@ -96,6 +134,24 @@ namespace MonoManicMiner.Spectrum
             var roomBlocks = _room.blocks;
             var offset = ((y / 8) * 32) + (x / 8);
             return roomBlocks[offset];
+        }
+
+        private int GetCrumb(int x, int y)
+        {
+            var offset = (y * 32) + x;
+            return _room.crumbs[offset];
+        }
+
+        private void SetCrumb(int x, int y, int crumb)
+        {
+            var offset = (y * 32) + x;
+            _room.crumbs[offset] = crumb;
+        }
+
+        private void ClearBlock(int x, int y)
+        {
+            var offset = (y * 32) + x;
+            _room.blocks[offset] = 0;
         }
 
         private void DoWillyLeft()

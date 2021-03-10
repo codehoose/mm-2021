@@ -34,7 +34,7 @@ namespace SK2D.Graphics
             Source = new Rectangle(0, 0, texture.Width, texture.Height);
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch, float scale)
+        public virtual void Draw(SpriteBatch spriteBatch, int scale)
         {
             var dest = new Rectangle((int)(Position.X * scale),
                                      (int)(Position.Y * scale),

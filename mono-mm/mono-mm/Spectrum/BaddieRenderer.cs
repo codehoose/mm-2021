@@ -33,7 +33,7 @@ namespace MonoManicMiner.Spectrum
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch, float scale)
+        public override void Draw(SpriteBatch spriteBatch, int scale)
         {
             DrawHorizontals(spriteBatch, scale);
         }

@@ -20,7 +20,7 @@ namespace MonoManicMiner.Spectrum
         {
         }
 
-        public override void Draw(SpriteBatch spriteBatch, float scale)
+        public override void Draw(SpriteBatch spriteBatch, int scale)
         {
             var count = Math.Clamp(Lives, 0, 8);
             var livesFrame = MusicPlaying ? Frame : 0;

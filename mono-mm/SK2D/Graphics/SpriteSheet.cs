@@ -18,7 +18,7 @@ namespace SK2D.Graphics
             _maxFrames = _columns * (texture.Height / cellSize);
         }
 
-        public override void Draw(SpriteBatch spriteBatch, float scale)
+        public override void Draw(SpriteBatch spriteBatch, int scale)
         {
             var dest = new Rectangle((int)(Position.X * scale), (int)(Position.Y * scale), (int)(CellSize * scale), (int)(CellSize * scale));
             Draw(spriteBatch, Texture, dest, Source);

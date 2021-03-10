@@ -8,7 +8,7 @@ namespace SK2D
     {
         private readonly int _width;
         private readonly int _height;
-        private readonly float _scale;
+        private readonly int _scale;
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -22,7 +22,7 @@ namespace SK2D
 
         public Tweens.TweenManager Tweens { get; } = new Tweens.TweenManager();
 
-        public SK2DGame(int width = 800, int height = 450, float scale = 1)
+        public SK2DGame(int width = 800, int height = 450, int scale = 1)
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
