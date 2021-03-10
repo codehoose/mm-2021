@@ -15,6 +15,7 @@ namespace MonoManicMiner.States
         private SpectrumFont _font;
         private MMMapFile _mapFile;
         private MinerWillyRenderer _willy;
+        private ExitRenderer _exit;
 
         public GameState(IStateManager stateManager)
             : base(stateManager)
@@ -30,6 +31,7 @@ namespace MonoManicMiner.States
             _lives = new LivesIndicator(sixteen);
             _baddieRenderer = new BaddieRenderer(sixteen);
             _willy = new MinerWillyRenderer(sixteen);
+            _exit = new ExitRenderer(sixteen);
         }
 
         public override void Enter(params object[] args)
@@ -43,9 +45,9 @@ namespace MonoManicMiner.States
             var room = _mapFile.rooms[roomId].Copy();
 
             _roomRenderer.SetRoom(room, roomId);
-
             _baddieRenderer.SetRoom(room);
             _willy.SetRoom(room);
+            _exit.SetRoom(room, roomId);
 
             StateManager.Game.Renderer.AddImage(_roomRenderer, Layer.Background);
             StateManager.Game.Renderer.AddImage(_air, Layer.UI, 0, 16 * 8);
@@ -56,6 +58,7 @@ namespace MonoManicMiner.States
 
             StateManager.Game.Renderer.AddImage(_baddieRenderer, Layer.Sprite);
             StateManager.Game.Renderer.AddImage(_willy, Layer.Sprite);
+            StateManager.Game.Renderer.AddImage(_exit, Layer.Sprite);
         }
 
         public override void Exit()

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SK2D.Graphics
+﻿namespace SK2D.Graphics
 {
     public enum Layer
     {
