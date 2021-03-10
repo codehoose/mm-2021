@@ -9,6 +9,8 @@ namespace MonoManicMiner.Spectrum
     {
         private readonly Texture2D _background;
         private readonly Texture2D _sun;
+        private int _conveyorFrame;
+        private float _time;
 
         public int Room { get; set; }
         public int KeyAnimFrame { get; set; }
@@ -39,7 +41,6 @@ namespace MonoManicMiner.Spectrum
                 var keyAnimFrame = blockOffset + 11 + KeyAnimFrame;
                 DrawBlock(spriteBatch, (int)(key.x * scale), (int)(key.y * scale), keyAnimFrame, (int)scale);
             }
-
 
     //        count = 0
 
@@ -83,17 +84,30 @@ namespace MonoManicMiner.Spectrum
                     {
                         DrawBlock(spriteBatch, (int)(x * 8 * scale), (int)(y * 8 * scale), blockOffset, (int)scale);
                     }
-                    else
+                    else if (blockId != 7)
                     {
                         DrawBlock(spriteBatch, (int)(x * 8 * scale), (int)(y * 8 * scale), blockOffset + blockId, (int)scale);
                     }
                 }
             }
 
+            // Draw Conveyor...
+            DrawConveyor(spriteBatch, blockOffset, (int)scale);
+
             if (Room == 20)
             {
                 Draw(spriteBatch, _background, _background.Bounds, _background.Bounds);
                 Draw(spriteBatch, _sun, new Rectangle(60, 32, _sun.Width, _sun.Height), _sun.Bounds);
+            }
+        }
+
+        private void DrawConveyor(SpriteBatch spriteBatch, int blockOffset, int scale)
+        {
+            var travelator = MapFile.rooms[Room].travelator;
+
+            for (var x = 0; x < travelator.len; x++)
+            {
+                DrawBlock(spriteBatch, (int)((travelator.pos.x + (x * 8)) * scale), (int)(travelator.pos.y * scale), (blockOffset + 7) + _conveyorFrame, (int)scale);
             }
         }
 
@@ -110,6 +124,52 @@ namespace MonoManicMiner.Spectrum
                              Vector2.Zero,
                              SpriteEffects.None,
                              0);
+        }
+
+        public override void Update(float deltaTime)
+        {
+            _time += deltaTime;
+            if (_time < 0.1f)
+            {
+                return;
+            }
+
+            _time -= 0.1f;
+
+            var travelator = MapFile.rooms[Room].travelator;
+            //        If cCONVl> 0
+            if (travelator.len > 0)
+            {
+
+                //    For x = 0 To(cCONVl - 1)
+                //for (var x = 0; x < travelator.len; x++)
+                //{
+
+                //    //        DrawBlock(imageBLOCKS, cCONVx + (x * 8), cCONVy, (BLOCKoff + 7) + cCONVanim)
+
+                //    //    Next
+                //}
+
+                if (travelator.dir == 1)
+                {
+                    _conveyorFrame = (_conveyorFrame + 1) & 3;
+                }
+                else
+                {
+                    _conveyorFrame = (_conveyorFrame - 1) & 3;
+                }
+
+                //    If Not cCONVd
+
+                //        cCONVanim = (cCONVanim + 1) And 3
+
+                //    Else
+                //        cCONVanim = (cCONVanim - 1) And 3
+
+                //    End If
+
+                //End If
+            }
         }
     }
 }
