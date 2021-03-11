@@ -15,6 +15,8 @@ namespace MonoManicMiner.States
         private MMMapFile _mapFile;
         private MinerWillyRenderer _willy;
         private ExitRenderer _exit;
+        private MMRoom _currentRoom;
+        private int _roomId;
 
         public GameState(IStateManager stateManager)
             : base(stateManager)
@@ -23,30 +25,31 @@ namespace MonoManicMiner.States
             var sun = StateManager.Game.ContentManager.LoadTexture("sun.png");
             var background = StateManager.Game.ContentManager.LoadTexture("background.png");
             var sixteen = StateManager.Game.ContentManager.LoadTexture("16x16.png");
+            var pick = stateManager.Game.ContentManager.LoadSfx("pick.wav");
 
             _font = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"), 8);
             _roomRenderer = new RoomBlocks(blocks, background, sun);
             _air = StateManager.Game.ContentManager.LoadImage("titleair.bmp");
             _lives = new LivesIndicator(sixteen);
             _baddieRenderer = new BaddieRenderer(sixteen);
-            _willy = new MinerWillyRenderer(sixteen);
+            _willy = new MinerWillyRenderer(sixteen, pick);
             _exit = new ExitRenderer(sixteen);
         }
 
         public override void Enter(params object[] args)
         {
-            var roomId = (int)args[0];
+            _roomId = (int)args[0];
             
             _mapFile = StateManager.Game.ContentManager.LoadJson<MMMapFile>("manicminer.json");
-            _font.Text = _mapFile.rooms[roomId].name;
+            _font.Text = _mapFile.rooms[_roomId].name;
             _lives.Lives = 6;
 
-            var room = _mapFile.rooms[roomId].Copy();
+            _currentRoom = _mapFile.rooms[_roomId].Copy();
 
-            _roomRenderer.SetRoom(room, roomId);
-            _baddieRenderer.SetRoom(room);
-            _willy.SetRoom(room);
-            _exit.SetRoom(room, roomId);
+            _roomRenderer.SetRoom(_currentRoom, _roomId);
+            _baddieRenderer.SetRoom(_currentRoom);
+            _willy.SetRoom(_currentRoom, _roomId, ChangeState);
+            _exit.SetRoom(_currentRoom, _roomId);
 
             StateManager.Game.Renderer.AddImage(_roomRenderer, Layer.Background);
             StateManager.Game.Renderer.AddImage(_air, Layer.UI, 0, 16 * 8);
@@ -63,6 +66,23 @@ namespace MonoManicMiner.States
         public override void Exit()
         {
             StateManager.Game.Renderer.Clear();
+        }
+
+        public override void Run(float deltaTime)
+        {
+            _exit.Flashing = (_currentRoom.keys.Length == 0);
+        }
+
+        private void ChangeState(GameStateType gameStateType)
+        {
+            switch(gameStateType)
+            {
+                case GameStateType.LevelDone:
+                    _roomId++;
+                    // TODO: AIR ...
+                    StateManager.ChangeState("game", _roomId);
+                    break;
+            }
         }
     }
 }

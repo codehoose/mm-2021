@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using SK2D.ContentManager.ResourceBuckets;
 using SK2D.Graphics;
@@ -21,6 +22,7 @@ namespace SK2D.ContentManager
             _root = _game.Content.RootDirectory;
             _buckets.Add(typeof(Texture2D), new TextureResourceBucket(game, Path.Combine(_root, "images")));
             _buckets.Add(typeof(string), new TextAssetResouceBucket(game, Path.Combine(_root, "json")));
+            _buckets.Add(typeof(SoundEffect), new WaveFileResourceBucket(game, Path.Combine(_root, "audio")));
         }
 
         public Texture2D LoadTexture(string name)
@@ -44,6 +46,11 @@ namespace SK2D.ContentManager
         {
             var texture = _buckets[typeof(Texture2D)].Get(name) as Texture2D;
             return new TileImage(texture, cellSize);
+        }
+
+        public SoundEffect LoadSfx(string name)
+        {
+            return _buckets[typeof(SoundEffect)].Get(name) as SoundEffect;
         }
 
         public T LoadJson<T>(string name)

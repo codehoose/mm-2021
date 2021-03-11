@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using ManicMiner.Converter.Lib.Models;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SK2D.Graphics;
@@ -11,6 +13,8 @@ namespace MonoManicMiner.Spectrum
     {
         private int dir;
         private MMRoom _room;
+        private int _roomId;
+        private Action<GameStateType> _changeGameState;
         private int _willyFall;
         private int _state; // cWillym
         private int _j;
@@ -20,16 +24,21 @@ namespace MonoManicMiner.Spectrum
 
         private float _time;
         private int _jp;
+        private int _score;
+        private int _cheat;
+        private SoundEffect _pick;
 
-        public MinerWillyRenderer(Texture2D texture)
+        public MinerWillyRenderer(Texture2D texture, SoundEffect pick)
             : base(texture, 16)
         {
-            
+            _pick = pick;
         }
 
-        public void SetRoom(MMRoom room)
+        public void SetRoom(MMRoom room, int roomId, Action<GameStateType> changeGameState)
         {
             _room = room;
+            _roomId = roomId;
+            _changeGameState = changeGameState;
             var start = _room.willyStart;
 
             Position = new Vector2(start.pos.x, start.pos.y);
@@ -422,7 +431,7 @@ namespace MonoManicMiner.Spectrum
 
             if (CheckWillyKillBlock() != 0)
             {
-                // set music to 6
+                // set music?! to 6
                 _state = 6;
             }
 
@@ -465,8 +474,6 @@ namespace MonoManicMiner.Spectrum
             CheckKeys();
             CheckExit();
             CheckSwitches();
-
-
         }
 
         private void CheckSwitches()
@@ -476,12 +483,67 @@ namespace MonoManicMiner.Spectrum
 
         private void CheckExit()
         {
-         
+            var exit = new Rectangle(_room.exitPosition.x, _room.exitPosition.y, 16, 16);
+            var player = new Rectangle(_x + 4, _y + 8, 2, 2);
+            if (exit.Intersects(player))
+            {
+                if (_roomId == 20 && _cheat == 0)
+                {
+                    // GAMEmode = 0
+                    // LASTm = 0
+                }
+                else
+                {
+                    _changeGameState(GameStateType.LevelDone);
+                }
+            }
+
+
+    //        If cEXITs = 1
+
+    //    If RectsOverlap(cEXITx, cEXITy,16,16,cWILLYx + 4,cWILLYy + 8,2,2)= 1
+
+    //        If ROOM = 20 And CHEAT = 0
+
+    //            GAMEmode = 6
+
+    //            LASTm = 0
+
+    //        Else
+    //            GAMEmode = 3
+
+    //        End If
+
+    //    End If
+
+    //End If
         }
 
         private void CheckKeys()
         {
-            
+            var keys = new List<MMPoint>(_room.keys);
+            var i = 0;
+            while (i < keys.Count)
+            {
+                var kx = keys[i].x;
+                var ky = keys[i].y;
+
+                var keyRect = new Rectangle(kx, ky, 8, 8);
+                var playerRect = new Rectangle(_x, _y, 10, 18);
+
+                if (keyRect.Intersects(playerRect))
+                {
+                    keys.RemoveAt(i);
+                    _score += 100;
+                    // PlaySound SFXpick
+                    _pick.Play();
+                }
+                else
+                {
+                    i++;
+                }
+            }
+            _room.keys = keys.ToArray();
         }
 
         private void DoDeath()

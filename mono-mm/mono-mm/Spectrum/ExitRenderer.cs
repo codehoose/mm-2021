@@ -1,5 +1,6 @@
 ﻿using ManicMiner.Converter.Lib.Models;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using SK2D.Graphics;
 

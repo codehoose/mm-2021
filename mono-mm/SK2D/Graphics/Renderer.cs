@@ -1,11 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 
 namespace SK2D.Graphics
 {
     public class Renderer
     {
+        private Queue<Action> _actions = new Queue<Action>();
+
         private readonly Layer[] _layerOrder = new Layer[] { Layer.Background, Layer.Sprite, Layer.Foreground, Layer.UI };
 
         private Dictionary<Layer, List<Image>> _layers = new Dictionary<Layer, List<Image>>();
@@ -21,23 +24,35 @@ namespace SK2D.Graphics
 
         public void AddImage(Image image, Layer layer)
         {
-            if (!_layers.TryGetValue(layer, out List<Image> images))
+            _actions.Enqueue(() =>
             {
-                images = new List<Image>();
-                _layers[layer] = images;
-            }
 
-            images.Add(image);
+                if (!_layers.TryGetValue(layer, out List<Image> images))
+                {
+                    images = new List<Image>();
+                    _layers[layer] = images;
+                }
+
+                images.Add(image);
+            });
         }
 
         public void AddImage(Image image, Layer layer, int x, int y)
         {
-            image.Position = new Vector2(x, y);
-            AddImage(image, layer);
+            _actions.Enqueue(() =>
+            {
+                image.Position = new Vector2(x, y);
+                AddImage(image, layer);
+            });
         }
 
         public void Update(float deltaTime)
         {
+            while (_actions.Count > 0)
+            {
+                _actions.Dequeue()();
+            }
+
             foreach (var kvp in _layers)
             {
                 foreach (var image in kvp.Value)
@@ -71,10 +86,13 @@ namespace SK2D.Graphics
 
         public void Clear()
         {
-            foreach (var kvp in _layers)
+            _actions.Enqueue(() =>
             {
-                kvp.Value.Clear();
-            }
+                foreach (var kvp in _layers)
+                {
+                    kvp.Value.Clear();
+                }
+            });
         }
     }
 }
