@@ -1,4 +1,6 @@
 ﻿using ManicMiner.Converter.Lib.Models;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoManicMiner.Spectrum;
 using SK2D.Graphics;
 using SK2D.StateMachine;
@@ -15,6 +17,7 @@ namespace MonoManicMiner.States
         private MMMapFile _mapFile;
         private MinerWillyRenderer _willy;
         private ExitRenderer _exit;
+        private AirRenderer _airMeter;
         private MMRoom _currentRoom;
         private int _roomId;
 
@@ -26,6 +29,8 @@ namespace MonoManicMiner.States
             var background = StateManager.Game.ContentManager.LoadTexture("background.png");
             var sixteen = StateManager.Game.ContentManager.LoadTexture("16x16.png");
             var pick = stateManager.Game.ContentManager.LoadSfx("pick.wav");
+            var airMeter = new Texture2D(stateManager.Game.GraphicsDevice, 256, 4);
+            airMeter.Fill(Color.White);
 
             _font = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"), 8);
             _roomRenderer = new RoomBlocks(blocks, background, sun);
@@ -34,6 +39,7 @@ namespace MonoManicMiner.States
             _baddieRenderer = new BaddieRenderer(sixteen);
             _willy = new MinerWillyRenderer(sixteen, pick);
             _exit = new ExitRenderer(sixteen);
+            _airMeter = new AirRenderer(airMeter);
         }
 
         public override void Enter(params object[] args)
@@ -43,6 +49,7 @@ namespace MonoManicMiner.States
             _mapFile = StateManager.Game.ContentManager.LoadJson<MMMapFile>("manicminer.json");
             _font.Text = _mapFile.rooms[_roomId].name;
             _lives.Lives = 6;
+            _airMeter.AirLeft = _mapFile.rooms[_roomId].airCount;
 
             _currentRoom = _mapFile.rooms[_roomId].Copy();
 
@@ -53,6 +60,7 @@ namespace MonoManicMiner.States
 
             StateManager.Game.Renderer.AddImage(_roomRenderer, Layer.Background);
             StateManager.Game.Renderer.AddImage(_air, Layer.UI, 0, 16 * 8);
+            StateManager.Game.Renderer.AddImage(_airMeter, Layer.UI, 24, 10 + (16 * 8));
             StateManager.Game.Renderer.AddImage(_font, Layer.UI, 0, 16 * 8);
             StateManager.Game.Renderer.AddImage(_lives, Layer.UI, 0, 168);
             StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _lives.Frame = frame);
