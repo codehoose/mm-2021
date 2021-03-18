@@ -38,8 +38,8 @@ namespace SK2D.Graphics
         {
             var dest = new Rectangle((int)(Position.X * scale),
                                      (int)(Position.Y * scale),
-                                     (int)(Size.X * Scale * scale),
-                                     (int)(Size.Y * Scale * scale));
+                                     (int)(Source.Width * Scale * scale),
+                                     (int)(Source.Height * Scale * scale));
 
             Draw(spriteBatch, Texture, dest, Source);
         }

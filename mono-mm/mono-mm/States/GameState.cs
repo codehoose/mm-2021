@@ -60,7 +60,9 @@ namespace MonoManicMiner.States
 
             StateManager.Game.Renderer.AddImage(_roomRenderer, Layer.Background);
             StateManager.Game.Renderer.AddImage(_air, Layer.UI, 0, 16 * 8);
-            StateManager.Game.Renderer.AddImage(_airMeter, Layer.UI, 24, 10 + (16 * 8));
+
+            var offset = 24 + (228 - _airMeter.AirLeft);
+            StateManager.Game.Renderer.AddImage(_airMeter, Layer.UI, offset, 10 + (16 * 8));
             StateManager.Game.Renderer.AddImage(_font, Layer.UI, 0, 16 * 8);
             StateManager.Game.Renderer.AddImage(_lives, Layer.UI, 0, 168);
             StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _lives.Frame = frame);
@@ -69,6 +71,8 @@ namespace MonoManicMiner.States
             StateManager.Game.Renderer.AddImage(_baddieRenderer, Layer.Sprite);
             StateManager.Game.Renderer.AddImage(_willy, Layer.Sprite);
             StateManager.Game.Renderer.AddImage(_exit, Layer.Sprite);
+
+            StateManager.Game.Tweens.Add(1, () => _airMeter.AirLeft--);
         }
 
         public override void Exit()
