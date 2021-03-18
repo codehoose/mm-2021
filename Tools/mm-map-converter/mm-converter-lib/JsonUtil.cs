@@ -11,7 +11,8 @@ namespace ManicMiner.Converter.Lib
                                       TravelatorParser travelatorParser,
                                       ExitParser exitParser,
                                       KeyParser keyParser,
-                                      HorizontalBaddiesParser horizontal)
+                                      HorizontalBaddiesParser horizontal,
+                                      AirParser airParser)
         {
             var file = new MMMapFile
             {
@@ -28,7 +29,8 @@ namespace ManicMiner.Converter.Lib
                     keys = keyParser.Keys[i],
                     travelator = travelatorParser.Travelators[i],
                     willyStart = willyStartParser.WillyStart[i],
-                    horizEnemies = horizontal.Baddies[i]
+                    horizEnemies = horizontal.Baddies[i],
+                    airCount = airParser.AirCount[i]
                 };
             }
 

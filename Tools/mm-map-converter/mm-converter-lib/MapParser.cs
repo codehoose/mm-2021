@@ -28,6 +28,7 @@ namespace ManicMiner.Converter.Lib
             var travelatorParser = new TravelatorParser();
             var keyParser = new KeyParser();
             var horiz = new HorizontalBaddiesParser();
+            var airParser = new AirParser();
 
             roomParser.Parse(lines);
             willyStartParser.Parse(lines);
@@ -35,8 +36,15 @@ namespace ManicMiner.Converter.Lib
             exitParser.Parse(lines);
             keyParser.Parse(lines);
             horiz.Parse(lines);
+            airParser.Parse(lines);
 
-            return JsonUtil.MakeFrom(roomParser, willyStartParser, travelatorParser, exitParser, keyParser, horiz);
+            return JsonUtil.MakeFrom(roomParser,
+                                     willyStartParser,
+                                     travelatorParser,
+                                     exitParser,
+                                     keyParser,
+                                     horiz,
+                                     airParser);
             /*
              * Each line:
              *  if it matches a marker; process the number of lines required for that section
