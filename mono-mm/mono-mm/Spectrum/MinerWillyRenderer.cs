@@ -28,6 +28,8 @@ namespace MonoManicMiner.Spectrum
         private int _cheat;
         private SoundEffect _pick;
 
+        public event EventHandler<int> ScoreUpdated;
+
         public MinerWillyRenderer(Texture2D texture, SoundEffect pick)
             : base(texture, 16)
         {
@@ -535,6 +537,7 @@ namespace MonoManicMiner.Spectrum
                 {
                     keys.RemoveAt(i);
                     _score += 100;
+                    ScoreUpdated?.Invoke(this, _score);
                     // PlaySound SFXpick
                     _pick.Play();
                 }

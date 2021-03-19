@@ -30,7 +30,7 @@ namespace MonoManicMiner.States
             _air = StateManager.Game.ContentManager.LoadImage("titleair.bmp");
             _piano = StateManager.Game.ContentManager.LoadImage("piano.bmp");
 
-            _font = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"), 8);
+            _font = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"));
             _font.Text = "                                  .  .  .  .  .  .  .  .  .  . MANIC MINER . .  BUG-BYTE ltd. 1983 . . By Matthew Smith . . . Q to P = Left & Right . . Bottom row = Jump . . A to G = Pause . . H to L = Tune On/Off . . . Guide Miner Willy through 20 lethal caverns   .  .  .  .  .  .  .  .                                        ";
 
             _minScrollPos = _font.Text.Length * -8;

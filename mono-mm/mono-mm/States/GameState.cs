@@ -19,7 +19,9 @@ namespace MonoManicMiner.States
         private ExitRenderer _exit;
         private AirRenderer _airMeter;
         private MMRoom _currentRoom;
+        private ScoreRenderer _scoreRenderer;
         private int _roomId;
+        private int _hiScore;
 
         public GameState(IStateManager stateManager)
             : base(stateManager)
@@ -32,7 +34,7 @@ namespace MonoManicMiner.States
             var airMeter = new Texture2D(stateManager.Game.GraphicsDevice, 256, 4);
             airMeter.Fill(Color.White);
 
-            _font = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"), 8);
+            _font = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"));
             _roomRenderer = new RoomBlocks(blocks, background, sun);
             _air = StateManager.Game.ContentManager.LoadImage("titleair.bmp");
             _lives = new LivesIndicator(sixteen);
@@ -40,6 +42,9 @@ namespace MonoManicMiner.States
             _willy = new MinerWillyRenderer(sixteen, pick);
             _exit = new ExitRenderer(sixteen);
             _airMeter = new AirRenderer(airMeter);
+            _scoreRenderer = new ScoreRenderer(StateManager.Game.ContentManager.LoadTexture("font.png"));
+
+            _willy.ScoreUpdated += Score_Update;
         }
 
         public override void Enter(params object[] args)
@@ -68,6 +73,7 @@ namespace MonoManicMiner.States
             StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _lives.Frame = frame);
             StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _roomRenderer.KeyAnimFrame = frame);
 
+            StateManager.Game.Renderer.AddImage(_scoreRenderer, Layer.UI, 0, 19 * 8);
             StateManager.Game.Renderer.AddImage(_baddieRenderer, Layer.Sprite);
             StateManager.Game.Renderer.AddImage(_willy, Layer.Sprite);
             StateManager.Game.Renderer.AddImage(_exit, Layer.Sprite);
@@ -95,6 +101,15 @@ namespace MonoManicMiner.States
                     StateManager.ChangeState("game", _roomId);
                     break;
             }
+        }
+
+        private void Score_Update(object sender, int newScore)
+        {
+            if (newScore > _hiScore)
+            {
+                _hiScore = newScore;
+            }
+            _scoreRenderer.UpdateScore(newScore, _hiScore);
         }
     }
 }
