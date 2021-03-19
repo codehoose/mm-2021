@@ -13,7 +13,8 @@ namespace MonoManicMiner
         {
             StateManager.Register<TitleScreenState>("title");
             StateManager.Register<GameState>("game");
-            StateManager.ChangeState("game", 0);
+            StateManager.Register<PauseState>("paused");
+            StateManager.ChangeState("game", 0, true);
             //StateManager.ChangeState("title");
         }
     }
