@@ -11,7 +11,6 @@ namespace SK2D
 
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Color _clearColour;
 
         public ContentManager.LocalContentManager ContentManager { get; }
 
@@ -26,7 +25,6 @@ namespace SK2D
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            _clearColour = Color.Black;
 
             _width = width;
             _height = height;
@@ -63,9 +61,6 @@ namespace SK2D
         {
             var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //    Exit();
-
             Tweens.Tick(deltaTime);
             Renderer.Update(deltaTime);
             StateManager.Run(deltaTime);
@@ -75,7 +70,6 @@ namespace SK2D
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(_clearColour);
             Renderer.Draw(gameTime);
             base.Draw(gameTime);
         }

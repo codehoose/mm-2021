@@ -14,8 +14,12 @@ namespace MonoManicMiner
             StateManager.Register<TitleScreenState>("title");
             StateManager.Register<GameState>("game");
             StateManager.Register<PauseState>("paused");
-            StateManager.ChangeState("game", 0, true);
-            //StateManager.ChangeState("title");
+            StateManager.Register<GameOverState>("gameover");
+            //StateManager.ChangeState("game", 0, true);
+
+            StateManager.ChangeState("gameover", " We must perform a quirkafleeg!", 0, 0);
+
+
         }
     }
 }

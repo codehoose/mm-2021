@@ -2,12 +2,13 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SK2D.Graphics
 {
     public class Renderer
     {
+        private Color _clearColour = Color.Black;
+
         private Queue<Action> _actions = new Queue<Action>();
 
         private readonly Layer[] _layerOrder = new Layer[] { Layer.Background, Layer.Sprite, Layer.Foreground, Layer.UI };
@@ -17,6 +18,8 @@ namespace SK2D.Graphics
         private readonly SpriteBatch _spriteBatch;
 
         public int Scale { get; set; } = 1;
+
+        public bool ClearBackBuffer { get; set; } = true;
 
         public Renderer(SpriteBatch spriteBatch)
         {
@@ -68,6 +71,11 @@ namespace SK2D.Graphics
 
         public void Draw(GameTime gameTime)
         {
+            if (ClearBackBuffer)
+            {
+                _spriteBatch.GraphicsDevice.Clear(_clearColour);
+            }
+
             // From https://stackoverflow.com/questions/9215027/nearest-neighbor-zoom
             _spriteBatch.Begin(SpriteSortMode.Deferred,
                                BlendState.AlphaBlend,

@@ -74,6 +74,8 @@ namespace MonoManicMiner.States
 
             _willy.IncrementScore += Score_Update;
 
+            _willy.OnDeath += Willy_Death;
+
             _pauseKey = new KeyUp(Keys.P, () =>
             {
                 StateManager.ChangeState("paused", _roomId);
@@ -187,6 +189,16 @@ namespace MonoManicMiner.States
                 _hiScore = _score;
             }
             _scoreRenderer.UpdateScore(_score, _hiScore);
+        }
+
+
+        private void Willy_Death(object sender, System.EventArgs e)
+        {
+            _lives.Lives--;
+            if (_lives.Lives == 0)
+            {
+                StateManager.ChangeState("gameover", _currentRoom.name, _score, _hiScore);
+            }
         }
 
         private void ToggleQuit(bool showQuitConfirm)

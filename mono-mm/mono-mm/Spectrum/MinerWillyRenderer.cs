@@ -30,6 +30,8 @@ namespace MonoManicMiner.Spectrum
 
         public event EventHandler<int> IncrementScore;
 
+        public event EventHandler OnDeath;
+
         public MinerWillyRenderer(Texture2D texture, SoundEffect pick)
             : base(texture, 16)
         {
@@ -41,17 +43,22 @@ namespace MonoManicMiner.Spectrum
             _state = 6;
         }
 
+        private void Reset()
+        {
+            _state = 0;
+            _js = 0;
+            _j = 0;
+            _jp = 0;
+            _x = _room.willyStart.pos.x;
+            _y = _room.willyStart.pos.y;
+        }
+
+
         public void SetRoom(MMRoom room, int roomId, Action<GameStateType> changeGameState)
         {
             _room = room;
             _roomId = roomId;
             _changeGameState = changeGameState;
-
-            // Reset everything here!
-            _state = 0;
-            _js = 0;
-            _j = 0;
-            _jp = 0;
 
             var start = _room.willyStart;
 
@@ -59,6 +66,9 @@ namespace MonoManicMiner.Spectrum
             dir = start.dir;
             _x = start.pos.x;
             _y = start.pos.y;
+
+            // Reset everything here!
+            Reset();
 
             var blockId = dir == 1 ? (8 + ((_x & 15) >> 1)) : (_x & 15) >> 1;
             SetFrame(blockId);
@@ -75,8 +85,101 @@ namespace MonoManicMiner.Spectrum
 
         private void CheckRoboHit()
         {
-
+            CheckHorizontalRoboHit();
         }
+
+        private void CheckHorizontalRoboHit()
+        {
+            //        For i = 1 To 4
+            foreach (var robot in _room.horizEnemies)
+            {
+                //    If cHROBOx(i)<> -1
+                if (robot.dir == 0)
+                {
+                    //        If cHROBOd(i)= 0
+                    if (dir != 0)
+                    {
+                        var robRect = new Rectangle(robot.pos.x & 248, robot.pos.y, 16, 16);
+                        var willyRect = new Rectangle(_x & 248, _y, 16, 16);
+                        if (robRect.Intersects(willyRect))
+                        {
+                            _state = 6;
+                        }
+
+                        //            If cWILLYd
+
+                        //                If ImagesCollide(image16, cWILLYx And 248,cWILLYy,8 + ((cWILLYx And 15)Shr 1),image16,cHROBOx(i) And 248,cHROBOy(i),cHROBOgfx(i) + ((cHROBOx(i) And cHROBOanim(i))/ 2))= 1
+
+                        //                    cWILLYm = 6
+
+                        //                End If
+
+                        //            Else
+                        //                If ImagesCollide(image16, cWILLYx And 248, cWILLYy, (cWILLYx And 15)Shr 1,image16,cHROBOx(i) And 248,cHROBOy(i),cHROBOgfx(i) + ((cHROBOx(i) And cHROBOanim(i))/ 2))= 1
+
+                        //                    cWILLYm = 6
+
+                        //                End If
+
+                        //            End If
+                    }
+                    else
+                    {
+                        var robRect = new Rectangle(robot.pos.x & 248, robot.pos.y, 16, 16);
+                        var willyRect = new Rectangle(_x & 248, _y, 16, 16);
+                        if (robRect.Intersects(willyRect))
+                        {
+                            _state = 6;
+                        }
+                    }
+                }
+                else
+                {
+                    if (dir != 0)
+                    {
+                        var robRect = new Rectangle(robot.pos.x & 248, robot.pos.y, 16, 16);
+                        var willyRect = new Rectangle(_x & 248, _y, 16, 16);
+                        if (robRect.Intersects(willyRect))
+                        {
+                            _state = 6;
+                        }
+                    }
+                    else
+                    {
+                        var robRect = new Rectangle(robot.pos.x & 248, robot.pos.y, 16, 16);
+                        var willyRect = new Rectangle(_x & 248, _y, 16, 16);
+                        if (robRect.Intersects(willyRect))
+                        {
+                            _state = 6;
+                        }
+                    }
+
+                    //        Else
+                    //            If cWILLYd
+                    //                If ImagesCollide(image16, cWILLYx And 248, cWILLYy, 8 + ((cWILLYx And 15)Shr 1),image16,cHROBOx(i) And 248,cHROBOy(i),(cHROBOgfx(i) + ((cHROBOx(i) And cHROBOanim(i))/ 2))+cHROBOflip(i))= 1
+
+                    //                    cWILLYm = 6
+
+                    //                End If
+
+                    //            Else
+                    //                If ImagesCollide(image16, cWILLYx And 248, cWILLYy, (cWILLYx And 15)Shr 1,image16,cHROBOx(i) And 248,cHROBOy(i),(cHROBOgfx(i) + ((cHROBOx(i) And cHROBOanim(i))/ 2))+cHROBOflip(i))= 1
+
+                    //                    cWILLYm = 6
+
+                    //                End If
+
+                    //            End If
+
+                    //        End If
+                }
+                
+                //    End If
+
+                //Next
+            }
+        }
+
 
         private int CheckWillyKillBlock()
         {
@@ -602,7 +705,9 @@ namespace MonoManicMiner.Spectrum
             //StopChannel MMusic
             //End If
             //PlaySound SFXdie
-            _state = 0;
+
+            Reset();
+            OnDeath?.Invoke(this, EventArgs.Empty);
         }
 
         private void DoWillyFall()
