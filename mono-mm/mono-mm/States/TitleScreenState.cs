@@ -67,7 +67,7 @@ namespace MonoManicMiner.States
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Enter))
             {
-                StateManager.ChangeState("game", _startLevel);
+                StateManager.ChangeState("game", _startLevel, true);
             }
             base.Run(deltaTime);
         }

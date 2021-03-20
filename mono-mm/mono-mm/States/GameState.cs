@@ -1,8 +1,10 @@
-﻿using ManicMiner.Converter.Lib.Models;
+﻿using System.Collections.Generic;
+using ManicMiner.Converter.Lib.Models;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoManicMiner.Spectrum;
+using SK2D;
 using SK2D.Graphics;
 using SK2D.Input;
 using SK2D.StateMachine;
@@ -12,6 +14,7 @@ namespace MonoManicMiner.States
 {
     public class GameState : BaseState
     {
+        private List<IPausable> _pauseables = new List<IPausable>();
         private RoomBlocks _roomRenderer;
         private LivesIndicator _lives;
         private BaddieRenderer _baddieRenderer;
@@ -24,13 +27,19 @@ namespace MonoManicMiner.States
         private MMRoom _currentRoom;
         private ScoreRenderer _scoreRenderer;
         private KeyUp _pauseKey;
+        private KeyUp _quitKey;
+        private KeyUp _yesKey;
+        private KeyUp _noKey;
 
         private Tween _livesAnimationTween;
         private Tween _keyAnimationTween;
         private Tween _airMeterTween;
 
         private int _roomId = -1;
+        private int _score;
         private int _hiScore;
+        private QuitGame _quitGameRenderer;
+        private bool _quitShowing;
 
         public GameState(IStateManager stateManager)
             : base(stateManager)
@@ -53,10 +62,38 @@ namespace MonoManicMiner.States
             _airMeter = new AirRenderer(airMeter);
             _scoreRenderer = new ScoreRenderer(StateManager.Game.ContentManager.LoadTexture("font.png"));
 
-            _willy.ScoreUpdated += Score_Update;
+            _pauseables.Add(_willy);
+            _pauseables.Add(_baddieRenderer);
+            _pauseables.Add(_roomRenderer);
+            _pauseables.Add(_exit);
 
-            _pauseKey = new KeyUp(Keys.P);
-            _pauseKey.KeyReleased += (o, e) => StateManager.ChangeState("paused", _roomId);
+            var blackBackground = new Texture2D(StateManager.Game.GraphicsDevice, 128, 24);
+            blackBackground.Fill(Color.Black);
+            _quitGameRenderer = new QuitGame(StateManager.Game.ContentManager.LoadTexture("font.png"), blackBackground);
+            _quitGameRenderer.Hidden = true;
+
+            _willy.IncrementScore += Score_Update;
+
+            _pauseKey = new KeyUp(Keys.P, () =>
+            {
+                StateManager.ChangeState("paused", _roomId);
+            });
+
+            _quitKey = new KeyUp(Keys.Escape, () =>
+            {
+                ToggleQuit(!_quitShowing);
+            });
+
+            _yesKey = new KeyUp(Keys.Y, () =>
+            {
+                ToggleQuit(false);
+                StateManager.ChangeState("title");
+            });
+
+            _noKey = new KeyUp(Keys.N, () =>
+            {
+                ToggleQuit(false);
+            });
         }
 
         public override void Enter(params object[] args)
@@ -69,6 +106,7 @@ namespace MonoManicMiner.States
                 _mapFile = StateManager.Game.ContentManager.LoadJson<MMMapFile>("manicminer.json");
                 _font.Text = _mapFile.rooms[_roomId].name;
                 _lives.Lives = 6;
+                _score = 0;
                 _airMeter.AirLeft = _mapFile.rooms[_roomId].airCount;
                 _currentRoom = _mapFile.rooms[_roomId].Copy();
 
@@ -76,27 +114,37 @@ namespace MonoManicMiner.States
                 _baddieRenderer.SetRoom(_currentRoom);
                 _willy.SetRoom(_currentRoom, _roomId, ChangeState);
                 _exit.SetRoom(_currentRoom, _roomId);
+                _scoreRenderer.UpdateScore(0, 0); // TODO: Load HISCORE
             }
 
             _livesAnimationTween = StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _lives.Frame = frame);
             _keyAnimationTween = StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _roomRenderer.KeyAnimFrame = frame);
             _airMeterTween = StateManager.Game.Tweens.Add(1, () => _airMeter.AirLeft--);
 
-            StateManager.Game.Renderer.AddImage(_roomRenderer, Layer.Background);
-            StateManager.Game.Renderer.AddImage(_air, Layer.UI, 0, 16 * 8);
+            _pauseables.Add(_livesAnimationTween);
+            _pauseables.Add(_keyAnimationTween);
+            _pauseables.Add(_airMeterTween);
 
-            StateManager.Game.Renderer.AddImage(_airMeter, Layer.UI, 28, 10 + (16 * 8));
-            StateManager.Game.Renderer.AddImage(_font, Layer.UI, 0, 16 * 8);
-            StateManager.Game.Renderer.AddImage(_lives, Layer.UI, 0, 168);
+            AddImage(_roomRenderer, Layer.Background);
+            AddImage(_air, Layer.UI, 0, 16 * 8);
 
-            StateManager.Game.Renderer.AddImage(_scoreRenderer, Layer.UI, 0, 19 * 8);
-            StateManager.Game.Renderer.AddImage(_baddieRenderer, Layer.Sprite);
-            StateManager.Game.Renderer.AddImage(_willy, Layer.Sprite);
-            StateManager.Game.Renderer.AddImage(_exit, Layer.Sprite);            
+            AddImage(_airMeter, Layer.UI, 28, 10 + (16 * 8));
+            AddImage(_font, Layer.UI, 0, 16 * 8);
+            AddImage(_lives, Layer.UI, 0, 168);
+
+            AddImage(_scoreRenderer, Layer.UI, 0, 19 * 8);
+            AddImage(_baddieRenderer, Layer.Sprite);
+            AddImage(_willy, Layer.Sprite);
+            AddImage(_exit, Layer.Sprite);
+            AddImage(_quitGameRenderer, Layer.UI);
         }
 
         public override void Exit()
         {
+            _pauseables.Remove(_livesAnimationTween);
+            _pauseables.Remove(_keyAnimationTween);
+            _pauseables.Remove(_airMeterTween);
+
             StateManager.Game.Renderer.Clear();
             StateManager.Game.Tweens.Remove(_airMeterTween);
             StateManager.Game.Tweens.Remove(_keyAnimationTween);
@@ -105,7 +153,17 @@ namespace MonoManicMiner.States
 
         public override void Run(float deltaTime)
         {
-            _pauseKey.Update();
+            if (!_quitShowing)
+            {
+                _pauseKey.Update();
+            }
+            else
+            {
+                _yesKey.Update();
+                _noKey.Update();
+            }
+
+            _quitKey.Update();
             _exit.Flashing = (_currentRoom.keys.Length == 0);
         }
 
@@ -121,13 +179,22 @@ namespace MonoManicMiner.States
             }
         }
 
-        private void Score_Update(object sender, int newScore)
+        private void Score_Update(object sender, int points)
         {
-            if (newScore > _hiScore)
+            _score += points;
+            if (_score > _hiScore)
             {
-                _hiScore = newScore;
+                _hiScore = _score;
             }
-            _scoreRenderer.UpdateScore(newScore, _hiScore);
+            _scoreRenderer.UpdateScore(_score, _hiScore);
+        }
+
+        private void ToggleQuit(bool showQuitConfirm)
+        {
+            _quitShowing = showQuitConfirm;
+            _quitGameRenderer.Hidden = !_quitShowing;
+
+            _pauseables.ForEach(p => p.Paused = showQuitConfirm);
         }
     }
 }

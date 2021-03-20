@@ -2,12 +2,12 @@
 {
     public enum GameStateType
     {
-        Setup,
-        Play,
-        Killed,
-        LevelDone,
-        GameOver,
-        Quit,
-        LastExit
+        Setup,          // 0
+        Play,           // 1
+        Killed,         // 2
+        LevelDone,      // 3
+        GameOver,       // 4
+        Quit,           // 5
+        LastExit        // 6
     }
 }

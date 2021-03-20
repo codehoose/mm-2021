@@ -3,8 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace SK2D.Graphics
 {
-    public class Image
+    public class Image : IPausable
     {
+        public bool Paused { get; set; }
+
+        public float TimeScale { get; set; } = 1f;
+
         public Texture2D Texture { get; }
 
         public Vector2 Size { get; }
@@ -14,6 +18,8 @@ namespace SK2D.Graphics
         public float Scale { get; set; } = 1;
 
         public Rectangle Source { get; protected set; }
+
+        public bool Hidden { get; set; }
 
         public static void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle dest, Rectangle source)
         {
@@ -44,8 +50,19 @@ namespace SK2D.Graphics
             Draw(spriteBatch, Texture, dest, Source);
         }
 
-        public virtual void Update(float deltaTime)
+        public void Update(float deltaTime)
         {
+            if (Paused)
+            {
+                return;
+            }
+
+            OnUpdate(deltaTime * TimeScale);
+        }
+
+        protected virtual void OnUpdate(float deltaTime)
+        {
+
         }
     }
 }

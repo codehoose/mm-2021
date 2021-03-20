@@ -22,7 +22,6 @@ namespace MonoManicMiner.States
 
             _pause = new KeyUp(Keys.P);
             _pause.KeyReleased += (o, e) => StateManager.ChangeState("game", _roomId, false);
-
         }
 
         public override void Enter(params object[] args)

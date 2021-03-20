@@ -31,7 +31,7 @@ namespace MonoManicMiner.Spectrum
             Position = new Vector2(room.exitPosition.x, room.exitPosition.y);
         }
 
-        public override void Update(float deltaTime)
+        protected override void OnUpdate(float deltaTime)
         {
             _time += deltaTime;
             if (_time < REFRESH_SPEED)

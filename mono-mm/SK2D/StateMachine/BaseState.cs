@@ -1,4 +1,6 @@
-﻿namespace SK2D.StateMachine
+﻿using SK2D.Graphics;
+
+namespace SK2D.StateMachine
 {
     public abstract class BaseState : IState
     {
@@ -19,6 +21,16 @@
         public virtual void Run(float deltaTime)
         {
 
+        }
+
+        protected void AddImage(Image image, Layer layer)
+        {
+            StateManager.Game.Renderer.AddImage(image, layer);
+        }
+
+        protected void AddImage(Image image, Layer layer, int x, int y)
+        {
+            StateManager.Game.Renderer.AddImage(image, layer, x, y);
         }
     }
 }

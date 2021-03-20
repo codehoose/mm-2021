@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace SK2D.Graphics
 {
@@ -57,7 +58,10 @@ namespace SK2D.Graphics
             {
                 foreach (var image in kvp.Value)
                 {
-                    image.Update(deltaTime);
+                    if (!image.Paused)
+                    {
+                        image.Update(deltaTime);
+                    }
                 }
             }
         }
@@ -77,7 +81,10 @@ namespace SK2D.Graphics
                 {
                     foreach (var image in _layers[layer])
                     {
-                        image.Draw(_spriteBatch, Scale);
+                        if (!image.Hidden)
+                        {
+                            image.Draw(_spriteBatch, Scale);
+                        }
                     }
                 }
             }

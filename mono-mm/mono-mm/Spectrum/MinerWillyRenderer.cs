@@ -24,11 +24,10 @@ namespace MonoManicMiner.Spectrum
 
         private float _time;
         private int _jp;
-        private int _score;
         private int _cheat;
         private SoundEffect _pick;
 
-        public event EventHandler<int> ScoreUpdated;
+        public event EventHandler<int> IncrementScore;
 
         public MinerWillyRenderer(Texture2D texture, SoundEffect pick)
             : base(texture, 16)
@@ -36,11 +35,23 @@ namespace MonoManicMiner.Spectrum
             _pick = pick;
         }
 
+        public void KillWilly()
+        {
+            _state = 6;
+        }
+
         public void SetRoom(MMRoom room, int roomId, Action<GameStateType> changeGameState)
         {
             _room = room;
             _roomId = roomId;
             _changeGameState = changeGameState;
+
+            // Reset everything here!
+            _state = 0;
+            _js = 0;
+            _j = 0;
+            _jp = 0;
+
             var start = _room.willyStart;
 
             Position = new Vector2(start.pos.x, start.pos.y);
@@ -70,7 +81,6 @@ namespace MonoManicMiner.Spectrum
         {
             return 0;
         }
-
 
         private void CheckWillyConv()
         {
@@ -417,7 +427,7 @@ namespace MonoManicMiner.Spectrum
             }
         }
 
-        public override void Update(float deltaTime)
+        protected override void OnUpdate(float deltaTime)
         {
             _time += deltaTime;
             if (_time < 0.1f)
@@ -536,8 +546,7 @@ namespace MonoManicMiner.Spectrum
                 if (keyRect.Intersects(playerRect))
                 {
                     keys.RemoveAt(i);
-                    _score += 100;
-                    ScoreUpdated?.Invoke(this, _score);
+                    IncrementScore?.Invoke(this, 100);
                     // PlaySound SFXpick
                     _pick.Play();
                 }
@@ -551,7 +560,15 @@ namespace MonoManicMiner.Spectrum
 
         private void DoDeath()
         {
-            
+            //GAMEmode = 2
+            //DEATHm = 0
+            //DEATHc = 0
+            //DEATHi = CopyImage(imageGAME)
+            //If ChannelPlaying(MMusic)
+            //StopChannel MMusic
+            //End If
+            //PlaySound SFXdie
+            _state = 0;
         }
 
         private void DoWillyFall()

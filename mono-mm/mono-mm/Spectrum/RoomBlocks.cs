@@ -116,7 +116,7 @@ namespace MonoManicMiner.Spectrum
                              0);
         }
 
-        public override void Update(float deltaTime)
+        protected override void OnUpdate(float deltaTime)
         {
             _time += deltaTime;
             if (_time < 0.1f)

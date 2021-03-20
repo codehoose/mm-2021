@@ -38,7 +38,7 @@ namespace MonoManicMiner.Spectrum
             DrawHorizontals(spriteBatch, scale);
         }
 
-        public override void Update(float deltaTime)
+        protected override void OnUpdate(float deltaTime)
         {
             UpdateHorizontals(deltaTime);
         }

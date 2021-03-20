@@ -10,9 +10,14 @@ namespace SK2D.Input
 
         public event EventHandler KeyReleased;
 
-        public KeyUp(Keys key)
+        public KeyUp(Keys key, Action _action = null)
         {
             _key = key;
+
+            if (_action != null)
+            {
+                KeyReleased += (o, e) => _action.Invoke();
+            }
         }
 
         public void Update()
