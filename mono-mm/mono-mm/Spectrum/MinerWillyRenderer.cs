@@ -17,6 +17,7 @@ namespace MonoManicMiner.Spectrum
         private Action<GameStateType> _changeGameState;
         private int _willyFall;
         private int _state; // cWillym
+        private int _input;
         private int _j;
         private int _js;
         private int _x;
@@ -84,7 +85,40 @@ namespace MonoManicMiner.Spectrum
 
         private void CheckWillyConv()
         {
-            
+            //If WillyOnConv()= 1
+            if (WillyOnConv())
+            {
+                // cWILLYd == willy dir
+                //If cWILLYd<>cCONVd Or (INKEY And 3)= 0
+                if (dir != _room.travelator.dir || (_input & 3) == 0)
+                {
+                    //If cCONVd = 0
+                    if (_room.travelator.dir ==0)
+                    {
+                        //INKEY = ((INKEY And 253) Or 1)
+                        _input = (_input & 253) | 1;
+                    }
+                    else
+                    {
+                        //INKEY = ((INKEY And 254) Or 2)
+                        _input = (_input & 254) | 2;
+                    }
+                }
+            }
+        }
+
+        private bool WillyOnConv()
+        {
+            //blk1 = GetBlock(cWILLYx, cWILLYy + 16)
+            var block1 = GetBlock(_x, _y + 16);
+            //blk2 = GetBlock(cWILLYx + 8, cWILLYy + 16)
+            var block2 = GetBlock(_x + 8, _y + 16);
+            //If blk1 = 7 Or blk2 = 7
+            return block1 == 7 || block2 == 7;
+            //Return 1
+            //Else
+            //Return 0
+            //End If
         }
 
         private void CheckWillyFall()
@@ -437,7 +471,7 @@ namespace MonoManicMiner.Spectrum
 
             _time -= 0.1f;
 
-            var input = GetWillyInput();
+            _input = GetWillyInput();
 
             CheckRoboHit();
 
@@ -456,7 +490,7 @@ namespace MonoManicMiner.Spectrum
             switch(_state)
             {
                 case 0:
-                    DoNormalMovement(input);
+                    DoNormalMovement(_input);
                     break;
                 case 1:
                     DoWillyJump();
