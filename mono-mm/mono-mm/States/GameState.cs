@@ -6,6 +6,7 @@ using MonoManicMiner.Spectrum;
 using SK2D.Graphics;
 using SK2D.Input;
 using SK2D.StateMachine;
+using SK2D.Tweens;
 
 namespace MonoManicMiner.States
 {
@@ -23,6 +24,10 @@ namespace MonoManicMiner.States
         private MMRoom _currentRoom;
         private ScoreRenderer _scoreRenderer;
         private KeyUp _pauseKey;
+
+        private Tween _livesAnimationTween;
+        private Tween _keyAnimationTween;
+        private Tween _airMeterTween;
 
         private int _roomId = -1;
         private int _hiScore;
@@ -73,27 +78,29 @@ namespace MonoManicMiner.States
                 _exit.SetRoom(_currentRoom, _roomId);
             }
 
+            _livesAnimationTween = StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _lives.Frame = frame);
+            _keyAnimationTween = StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _roomRenderer.KeyAnimFrame = frame);
+            _airMeterTween = StateManager.Game.Tweens.Add(1, () => _airMeter.AirLeft--);
+
             StateManager.Game.Renderer.AddImage(_roomRenderer, Layer.Background);
             StateManager.Game.Renderer.AddImage(_air, Layer.UI, 0, 16 * 8);
 
-            var offset = 24 + (228 - _airMeter.AirLeft);
-            StateManager.Game.Renderer.AddImage(_airMeter, Layer.UI, offset, 10 + (16 * 8));
+            StateManager.Game.Renderer.AddImage(_airMeter, Layer.UI, 28, 10 + (16 * 8));
             StateManager.Game.Renderer.AddImage(_font, Layer.UI, 0, 16 * 8);
             StateManager.Game.Renderer.AddImage(_lives, Layer.UI, 0, 168);
-            StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _lives.Frame = frame);
-            StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _roomRenderer.KeyAnimFrame = frame);
 
             StateManager.Game.Renderer.AddImage(_scoreRenderer, Layer.UI, 0, 19 * 8);
             StateManager.Game.Renderer.AddImage(_baddieRenderer, Layer.Sprite);
             StateManager.Game.Renderer.AddImage(_willy, Layer.Sprite);
-            StateManager.Game.Renderer.AddImage(_exit, Layer.Sprite);
-
-            StateManager.Game.Tweens.Add(1, () => _airMeter.AirLeft--);
+            StateManager.Game.Renderer.AddImage(_exit, Layer.Sprite);            
         }
 
         public override void Exit()
         {
             StateManager.Game.Renderer.Clear();
+            StateManager.Game.Tweens.Remove(_airMeterTween);
+            StateManager.Game.Tweens.Remove(_keyAnimationTween);
+            StateManager.Game.Tweens.Remove(_livesAnimationTween);
         }
 
         public override void Run(float deltaTime)
@@ -104,7 +111,7 @@ namespace MonoManicMiner.States
 
         private void ChangeState(GameStateType gameStateType)
         {
-            switch(gameStateType)
+            switch (gameStateType)
             {
                 case GameStateType.LevelDone:
                     _roomId++;

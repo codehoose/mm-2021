@@ -7,15 +7,18 @@ namespace MonoManicMiner.States
 {
     class PauseState : BaseState
     {
-        private SpectrumFont _font;
+        private SpectrumFont _paused;
+        private SpectrumFont _pressKey;
         private KeyUp _pause;
         private int _roomId;
 
         public PauseState(IStateManager stateManager)
             : base(stateManager)
         {
-            _font = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"));
-            _font.Text = $"`{FontColor.Cyan}- P A U S E D -";
+            _paused = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"));
+            _pressKey = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"));
+            _paused.Text = $"`{FontColor.Cyan}- P A U S E D -";
+            _pressKey.Text = $"`{FontColor.Yellow}Press 'P' to resume";
 
             _pause = new KeyUp(Keys.P);
             _pause.KeyReleased += (o, e) => StateManager.ChangeState("game", _roomId, false);
@@ -25,7 +28,8 @@ namespace MonoManicMiner.States
         public override void Enter(params object[] args)
         {
             _roomId = (int)args[0];
-            StateManager.Game.Renderer.AddImage(_font, SK2D.Graphics.Layer.UI);
+            StateManager.Game.Renderer.AddImage(_paused, SK2D.Graphics.Layer.UI, 64, 11 * 8);
+            StateManager.Game.Renderer.AddImage(_pressKey, SK2D.Graphics.Layer.UI, 6 * 8, 13 * 8);
         }
 
         public override void Run(float deltaTime)
