@@ -42,12 +42,6 @@ namespace SK2D.ContentManager
             return new SpriteSheet(texture, cellSize);
         }
 
-        public TileImage LoadTileImage(string name, int cellSize)
-        {
-            var texture = _buckets[typeof(Texture2D)].Get(name) as Texture2D;
-            return new TileImage(texture, cellSize);
-        }
-
         public SoundEffect LoadSfx(string name)
         {
             return _buckets[typeof(SoundEffect)].Get(name) as SoundEffect;

@@ -16,7 +16,7 @@ namespace MonoManicMiner.Spectrum
         public static char White = 'h';
     }
 
-    class SpectrumFont : TileImage
+    class SpectrumFont : SpriteSheet
     {
         public string Text { get; set; }
 

@@ -5,7 +5,7 @@ using SK2D.Graphics;
 
 namespace MonoManicMiner.Spectrum
 {
-    class RoomBlocks : TileImage
+    class RoomBlocks : SpriteSheet
     {
         private readonly Texture2D _background;
         private readonly Texture2D _sun;

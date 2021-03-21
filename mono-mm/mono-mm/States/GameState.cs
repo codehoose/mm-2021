@@ -245,9 +245,6 @@ namespace MonoManicMiner.States
             _baddieRenderer.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
             _willy.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
             _exit.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
-            //_airMeter.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
-            //_air.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
-            //_scoreRenderer.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
         }
 
         private void Score_Update(object sender, int points)
