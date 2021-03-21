@@ -21,7 +21,7 @@ namespace SK2D.Graphics
         public override void Draw(SpriteBatch spriteBatch, int scale)
         {
             var dest = new Rectangle((int)(Position.X * scale), (int)(Position.Y * scale), (int)(CellSize * scale), (int)(CellSize * scale));
-            Draw(spriteBatch, Texture, dest, Source);
+            Draw(spriteBatch, Texture, dest, Source, DrawColor);
         }
 
         public void SetFrame(int frame)

@@ -14,6 +14,9 @@ namespace MonoManicMiner.States
 {
     public class GameState : BaseState
     {
+        private static float TRICKDOWN_COOLDOWN = 0.03f;
+        private static Color DARK_COLOUR = Color.Blue;
+
         private List<IPausable> _pauseables = new List<IPausable>();
         private RoomBlocks _roomRenderer;
         private LivesIndicator _lives;
@@ -40,6 +43,8 @@ namespace MonoManicMiner.States
         private int _hiScore;
         private QuitGame _quitGameRenderer;
         private bool _quitShowing;
+        private bool _doEnd;
+        private float _trickleDownTime;
 
         public GameState(IStateManager stateManager)
             : base(stateManager)
@@ -75,6 +80,7 @@ namespace MonoManicMiner.States
             _willy.IncrementScore += Score_Update;
 
             _willy.OnDeath += Willy_Death;
+            _willy.GodMode = true;
 
             _pauseKey = new KeyUp(Keys.P, () =>
             {
@@ -103,12 +109,20 @@ namespace MonoManicMiner.States
             _roomId = (int)args[0];
             var loadMapFile = (bool)args[1];
 
+            var lives = 6;
+
+            if (args.Length > 2)
+            {
+                _score = (int)args[2];
+                _hiScore = (int)args[3];
+                lives = (int)args[4];
+            }
+
             if (loadMapFile)
             {
                 _mapFile = StateManager.Game.ContentManager.LoadJson<MMMapFile>("manicminer.json");
                 _font.Text = _mapFile.rooms[_roomId].name;
-                _lives.Lives = 6;
-                _score = 0;
+                _lives.Lives = lives;
                 _airMeter.AirLeft = _mapFile.rooms[_roomId].airCount;
                 _currentRoom = _mapFile.rooms[_roomId].Copy();
 
@@ -116,7 +130,7 @@ namespace MonoManicMiner.States
                 _baddieRenderer.SetRoom(_currentRoom);
                 _willy.SetRoom(_currentRoom, _roomId, ChangeState);
                 _exit.SetRoom(_currentRoom, _roomId);
-                _scoreRenderer.UpdateScore(0, 0); // TODO: Load HISCORE
+                _scoreRenderer.UpdateScore(_score, _hiScore);
             }
 
             _livesAnimationTween = StateManager.Game.Tweens.AddClamp(0.2f, 0, 3, frame => _lives.Frame = frame);
@@ -126,6 +140,10 @@ namespace MonoManicMiner.States
             _pauseables.Add(_livesAnimationTween);
             _pauseables.Add(_keyAnimationTween);
             _pauseables.Add(_airMeterTween);
+
+            // Force all paused items to become unpaused. This is for when
+            // the level changes
+            _pauseables.ForEach(p => p.Paused = false);
 
             AddImage(_roomRenderer, Layer.Background);
             AddImage(_air, Layer.UI, 0, 16 * 8);
@@ -155,6 +173,12 @@ namespace MonoManicMiner.States
 
         public override void Run(float deltaTime)
         {
+            if (_doEnd)
+            {
+                TrickleDownAir(deltaTime);
+                return;
+            }
+
             if (!_quitShowing)
             {
                 _pauseKey.Update();
@@ -174,11 +198,56 @@ namespace MonoManicMiner.States
             switch (gameStateType)
             {
                 case GameStateType.LevelDone:
-                    _roomId++;
-                    // TODO: AIR ...
-                    StateManager.ChangeState("game", _roomId, true);
+                    if (_exit.Flashing)
+                    {
+                        DoLevelEnd();
+                    }
                     break;
             }
+        }
+
+        private void DoLevelEnd()
+        {
+            _doEnd = true;
+            MakeBlue(true);
+            _pauseables.ForEach(p => p.Paused = true);
+        }
+
+        private void TrickleDownAir(float deltaTime)
+        {
+            _trickleDownTime += deltaTime;
+            if (_trickleDownTime >= TRICKDOWN_COOLDOWN)
+            {
+                _trickleDownTime -= TRICKDOWN_COOLDOWN;
+                _airMeter.AirLeft--;
+                _score += 10;
+                if (_score > _hiScore)
+                {
+                    _hiScore = _score;
+                }
+                _scoreRenderer.UpdateScore(_score, _hiScore);
+
+                if (_airMeter.AirLeft <= 0)
+                {
+                    _doEnd = false;
+                    _trickleDownTime = 0;
+                    MakeBlue(false);
+                    StateManager.ChangeState("game", _roomId + 1, true, _score, _hiScore, _lives.Lives);
+                }
+            }
+        }
+
+        private void MakeBlue(bool makeBlue)
+        {
+            _font.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
+            _roomRenderer.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
+            _lives.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
+            _baddieRenderer.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
+            _willy.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
+            _exit.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
+            //_airMeter.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
+            //_air.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
+            //_scoreRenderer.DrawColor = makeBlue ? DARK_COLOUR : Color.White;
         }
 
         private void Score_Update(object sender, int points)
@@ -190,7 +259,6 @@ namespace MonoManicMiner.States
             }
             _scoreRenderer.UpdateScore(_score, _hiScore);
         }
-
 
         private void Willy_Death(object sender, System.EventArgs e)
         {
@@ -205,7 +273,6 @@ namespace MonoManicMiner.States
         {
             _quitShowing = showQuitConfirm;
             _quitGameRenderer.Hidden = !_quitShowing;
-
             _pauseables.ForEach(p => p.Paused = showQuitConfirm);
         }
     }

@@ -29,14 +29,14 @@ namespace MonoManicMiner.Spectrum
             {
                 SetFrame(livesFrame);
                 var dest = new Rectangle((int)(x * 16 * scale), (int)(168 * scale), (int)(CellSize * scale), (int)(CellSize * scale));
-                Draw(spriteBatch, Texture, dest, Source);
+                Draw(spriteBatch, Texture, dest, Source, DrawColor);
             }
 
             if (CheatOn)
             {
                 SetFrame(461);
                 var dest = new Rectangle((int)(count * 16 * scale), (int)(168 * scale), (int)(CellSize * scale), (int)(CellSize * scale));
-                Draw(spriteBatch, Texture, dest, Source);
+                Draw(spriteBatch, Texture, dest, Source, DrawColor);
             }
         }
     }

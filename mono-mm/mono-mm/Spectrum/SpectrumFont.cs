@@ -51,7 +51,7 @@ namespace MonoManicMiner.Spectrum
                 {
                     var ord = Text[charIndex] - ' ';
                     SetFrame(ord + colourOffset);
-                    Draw(spriteBatch, Texture, dest, Source);
+                    Draw(spriteBatch, Texture, dest, Source, DrawColor);
                     x++;
                 }
 

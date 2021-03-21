@@ -28,6 +28,8 @@ namespace MonoManicMiner.Spectrum
         private int _cheat;
         private SoundEffect _pick;
 
+        public bool GodMode { get; set; }
+
         public event EventHandler<int> IncrementScore;
 
         public event EventHandler OnDeath;
@@ -85,7 +87,10 @@ namespace MonoManicMiner.Spectrum
 
         private void CheckRoboHit()
         {
-            CheckHorizontalRoboHit();
+            if (!GodMode)
+            {
+                CheckHorizontalRoboHit();
+            }
         }
 
         private void CheckHorizontalRoboHit()

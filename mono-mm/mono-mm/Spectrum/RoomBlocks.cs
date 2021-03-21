@@ -68,8 +68,8 @@ namespace MonoManicMiner.Spectrum
 
             if (_roomId == 20)
             {
-                Draw(spriteBatch, _background, _background.Bounds, _background.Bounds);
-                Draw(spriteBatch, _sun, new Rectangle(60, 32, _sun.Width, _sun.Height), _sun.Bounds);
+                Draw(spriteBatch, _background, _background.Bounds, _background.Bounds, DrawColor);
+                Draw(spriteBatch, _sun, new Rectangle(60, 32, _sun.Width, _sun.Height), _sun.Bounds, DrawColor);
             }
         }
 
@@ -84,7 +84,7 @@ namespace MonoManicMiner.Spectrum
             spriteBatch.Draw(Texture,
                              dest,
                              source,
-                             Color.White,
+                             DrawColor,
                              0,
                              Vector2.Zero,
                              SpriteEffects.None,
@@ -109,7 +109,7 @@ namespace MonoManicMiner.Spectrum
             spriteBatch.Draw(Texture,
                              dest,
                              Source,
-                             Color.White,
+                             DrawColor,
                              0,
                              Vector2.Zero,
                              SpriteEffects.None,

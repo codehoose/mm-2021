@@ -24,7 +24,7 @@ namespace MonoManicMiner.Spectrum
                          (int)(_dest.Width * Scale * scale),
                          (int)(_dest.Height * Scale * scale));
 
-            Draw(spriteBatch, _background, dest, _background.Bounds);
+            Draw(spriteBatch, _background, dest, _background.Bounds, DrawColor);
             base.Draw(spriteBatch, scale);
         }
 

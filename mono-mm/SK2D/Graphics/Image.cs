@@ -21,12 +21,14 @@ namespace SK2D.Graphics
 
         public bool Hidden { get; set; }
 
-        public static void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle dest, Rectangle source)
+        public Color DrawColor { get; set; } = Color.White;
+
+        public static void Draw(SpriteBatch spriteBatch, Texture2D texture, Rectangle dest, Rectangle source, Color drawColor)
         {
             spriteBatch.Draw(texture,
                              dest,
                              source,
-                             Color.White,
+                             drawColor,
                              0,
                              Vector2.Zero,
                              SpriteEffects.None,
@@ -47,7 +49,7 @@ namespace SK2D.Graphics
                                      (int)(Source.Width * Scale * scale),
                                      (int)(Source.Height * Scale * scale));
 
-            Draw(spriteBatch, Texture, dest, Source);
+            Draw(spriteBatch, Texture, dest, Source, DrawColor);
         }
 
         public void Update(float deltaTime)

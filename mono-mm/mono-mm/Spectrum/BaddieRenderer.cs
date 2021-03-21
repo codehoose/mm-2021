@@ -100,7 +100,7 @@ namespace MonoManicMiner.Spectrum
                 var y = robot.pos.y;
                 SetFrame(blockId);
                 var dest = new Rectangle((int)(x * scale), (int)(y * scale), (int)(CellSize * scale), (int)(CellSize * scale));
-                Draw(spriteBatch, Texture, dest, Source);
+                Draw(spriteBatch, Texture, dest, Source, DrawColor);
             }
         }
     }
