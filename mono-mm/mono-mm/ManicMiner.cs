@@ -5,7 +5,7 @@ namespace MonoManicMiner
 {
     public class ManicMiner : SK2DGame
     {
-        public ManicMiner() : base(512, 384, 2)
+        public ManicMiner() : base(1024, 768, 4)
         {
         }
 

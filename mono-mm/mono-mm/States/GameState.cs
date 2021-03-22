@@ -114,7 +114,7 @@ namespace MonoManicMiner.States
 
         public override void Enter(params object[] args)
         {
-            _roomId = (int)args[0];
+            _roomId = 1; // (int)args[0];
             var loadMapFile = (bool)args[1];
 
             var lives = 2;

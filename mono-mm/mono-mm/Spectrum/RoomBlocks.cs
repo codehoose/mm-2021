@@ -55,6 +55,7 @@ namespace MonoManicMiner.Spectrum
                     var blockId = room.blocks[(y * 32) + x];
                     if (blockId == 4)
                     {
+                        DrawBlock(spriteBatch, (int)(x * 8 * scale), (int)(y * 8 * scale), blockOffset, (int)scale);
                         DrawCrumbling(spriteBatch, x, y, blockOffset, (int)scale);
                     }
                     else if (blockId != 7)
