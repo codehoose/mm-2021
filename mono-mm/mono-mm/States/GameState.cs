@@ -20,6 +20,7 @@ namespace MonoManicMiner.States
 
         private SoundEffect _pickUpKey;
         private SoundEffect _die;
+        private SoundEffect _jump;
 
         private List<IPausable> _pauseables = new List<IPausable>();
         private RoomBlocks _roomRenderer;
@@ -62,6 +63,7 @@ namespace MonoManicMiner.States
 
             _pickUpKey = StateManager.Game.ContentManager.LoadSfx("pick.wav");
             _die = StateManager.Game.ContentManager.LoadSfx("die.wav");
+            _jump = StateManager.Game.ContentManager.LoadSfx("jump.wav");
 
             _font = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"));
             _roomRenderer = new RoomBlocks(blocks, background, sun);
@@ -84,6 +86,7 @@ namespace MonoManicMiner.States
             _quitGameRenderer.Hidden = true;
 
             _willy.IncrementScore += Score_Update;
+            _willy.Jumping += Willy_Jumping;
 
             _willy.OnDeath += Willy_Death;
 
@@ -261,6 +264,12 @@ namespace MonoManicMiner.States
                 _hiScore = _score;
             }
             _scoreRenderer.UpdateScore(_score, _hiScore);
+        }
+
+
+        private void Willy_Jumping(object sender, int jump)
+        {
+            _jump.Play(1, jump / 11f, 0);
         }
 
         private void Willy_Death(object sender, System.EventArgs e)

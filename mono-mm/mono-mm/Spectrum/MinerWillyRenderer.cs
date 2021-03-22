@@ -30,6 +30,8 @@ namespace MonoManicMiner.Spectrum
 
         public event EventHandler<int> IncrementScore;
 
+        public event EventHandler<int> Jumping;
+
         public event EventHandler OnDeath;
 
         public MinerWillyRenderer(Texture2D texture)
@@ -481,6 +483,7 @@ namespace MonoManicMiner.Spectrum
                 //     SoundPitch SFXjump,16384 + (cWILLYjs * 1500)
 
                 //     PlaySound SFXjump
+                Jumping.Invoke(this, _js);
             }
             // End If
         }
@@ -757,7 +760,7 @@ namespace MonoManicMiner.Spectrum
             //  SoundPitch SFXjump,16384 - (cWILLYjs * 1000)
             Position = new Vector2(_x & 248, _y);
 
-          //  PlaySound SFXjump
+            Jumping.Invoke(this, 11);
         }
     }
 }
