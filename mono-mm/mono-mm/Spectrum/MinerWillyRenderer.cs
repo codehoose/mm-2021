@@ -760,7 +760,7 @@ namespace MonoManicMiner.Spectrum
             //  SoundPitch SFXjump,16384 - (cWILLYjs * 1000)
             Position = new Vector2(_x & 248, _y);
 
-            Jumping.Invoke(this, 11);
+            Jumping.Invoke(this, _js);
         }
     }
 }
