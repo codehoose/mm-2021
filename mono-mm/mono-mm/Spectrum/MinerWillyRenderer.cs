@@ -25,6 +25,7 @@ namespace MonoManicMiner.Spectrum
         private float _time;
         private int _jp;
         private int _cheat;
+        private Texture2D _background;
 
         public bool GodMode { get; set; }
 
@@ -34,10 +35,10 @@ namespace MonoManicMiner.Spectrum
 
         public event EventHandler OnDeath;
 
-        public MinerWillyRenderer(Texture2D texture)
+        public MinerWillyRenderer(Texture2D texture, Texture2D background)
             : base(texture, 16)
         {
-
+            _background = background;
         }
 
         public void KillWilly()
@@ -58,6 +59,16 @@ namespace MonoManicMiner.Spectrum
 
             var blockId = dir == 1 ? (8 + ((_x & 15) >> 1)) : (_x & 15) >> 1;
             SetFrame(blockId);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch, int scale)
+        {
+            base.Draw(spriteBatch, scale);
+            if (_roomId == 19)
+            {
+                var dest = new Rectangle(0, 0, _background.Width * scale, _background.Height * scale);
+                Image.Draw(spriteBatch, _background, dest, _background.Bounds, DrawColor);
+            }
         }
 
         public void SetRoom(MMRoom room, int roomId, Action<GameStateType> changeGameState)

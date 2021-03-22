@@ -11,6 +11,16 @@ using SK2D.Input;
 using SK2D.StateMachine;
 using SK2D.Tweens;
 
+
+/*
+ * TODO:
+ * Vertical robots
+ * Special case rooms
+ * Special robots
+ * Switches
+ * 
+ */
+
 namespace MonoManicMiner.States
 {
     public class GameState : BaseState
@@ -71,7 +81,7 @@ namespace MonoManicMiner.States
             _air = StateManager.Game.ContentManager.LoadImage("titleair.bmp");
             _lives = new LivesIndicator(sixteen);
             _baddieRenderer = new BaddieRenderer(sixteen);
-            _willy = new MinerWillyRenderer(sixteen);
+            _willy = new MinerWillyRenderer(sixteen, background);
             _exit = new ExitRenderer(sixteen);
             _airMeter = new AirRenderer(airMeter);
             _scoreRenderer = new ScoreRenderer(StateManager.Game.ContentManager.LoadTexture("font.png"));
