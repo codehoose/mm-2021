@@ -15,6 +15,8 @@ namespace MonoManicMiner.States
         private SpectrumFont _gameOver;
         private Image _air;
 
+        private int _count = 2;
+
         public GameOverState(IStateManager stateManager)
             : base(stateManager)
         {
@@ -38,7 +40,7 @@ namespace MonoManicMiner.States
             _boot.SetFrame(461);
             _willy.SetFrame(0);
 
-            StateManager.Game.Renderer.ClearBackBuffer = false;
+            StateManager.Game.Renderer.Clear();
 
             AddImage(_air, Layer.UI, 0, 16 * 8);
             AddImage(_roomName, Layer.UI, 0, 16 * 8);
@@ -55,6 +57,14 @@ namespace MonoManicMiner.States
 
         public override void Run(float deltaTime)
         {
+            if (_count > 0)
+            {
+                _count--;
+                return;
+            }
+
+            StateManager.Game.Renderer.ClearBackBuffer = false;
+
             var y = _boot.Position.Y;
             y += 128 * deltaTime;
             if (y >= 96)

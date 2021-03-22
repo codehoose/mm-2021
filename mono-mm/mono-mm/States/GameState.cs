@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ManicMiner.Converter.Lib.Models;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoManicMiner.Spectrum;
@@ -16,6 +17,9 @@ namespace MonoManicMiner.States
     {
         private static float TRICKDOWN_COOLDOWN = 0.03f;
         private static Color DARK_COLOUR = Color.Blue;
+
+        private SoundEffect _pickUpKey;
+        private SoundEffect _die;
 
         private List<IPausable> _pauseables = new List<IPausable>();
         private RoomBlocks _roomRenderer;
@@ -53,16 +57,18 @@ namespace MonoManicMiner.States
             var sun = StateManager.Game.ContentManager.LoadTexture("sun.png");
             var background = StateManager.Game.ContentManager.LoadTexture("background.png");
             var sixteen = StateManager.Game.ContentManager.LoadTexture("16x16.png");
-            var pick = stateManager.Game.ContentManager.LoadSfx("pick.wav");
             var airMeter = new Texture2D(stateManager.Game.GraphicsDevice, 256, 4);
             airMeter.Fill(Color.White);
+
+            _pickUpKey = StateManager.Game.ContentManager.LoadSfx("pick.wav");
+            _die = StateManager.Game.ContentManager.LoadSfx("die.wav");
 
             _font = new SpectrumFont(StateManager.Game.ContentManager.LoadTexture("font.png"));
             _roomRenderer = new RoomBlocks(blocks, background, sun);
             _air = StateManager.Game.ContentManager.LoadImage("titleair.bmp");
             _lives = new LivesIndicator(sixteen);
             _baddieRenderer = new BaddieRenderer(sixteen);
-            _willy = new MinerWillyRenderer(sixteen, pick);
+            _willy = new MinerWillyRenderer(sixteen);
             _exit = new ExitRenderer(sixteen);
             _airMeter = new AirRenderer(airMeter);
             _scoreRenderer = new ScoreRenderer(StateManager.Game.ContentManager.LoadTexture("font.png"));
@@ -80,7 +86,6 @@ namespace MonoManicMiner.States
             _willy.IncrementScore += Score_Update;
 
             _willy.OnDeath += Willy_Death;
-            _willy.GodMode = true;
 
             _pauseKey = new KeyUp(Keys.P, () =>
             {
@@ -109,7 +114,7 @@ namespace MonoManicMiner.States
             _roomId = (int)args[0];
             var loadMapFile = (bool)args[1];
 
-            var lives = 6;
+            var lives = 2;
 
             if (args.Length > 2)
             {
@@ -249,6 +254,7 @@ namespace MonoManicMiner.States
 
         private void Score_Update(object sender, int points)
         {
+            _pickUpKey.Play();
             _score += points;
             if (_score > _hiScore)
             {
@@ -259,8 +265,9 @@ namespace MonoManicMiner.States
 
         private void Willy_Death(object sender, System.EventArgs e)
         {
+            _die.Play();
             _lives.Lives--;
-            if (_lives.Lives == 0)
+            if (_lives.Lives < 0)
             {
                 StateManager.ChangeState("gameover", _currentRoom.name, _score, _hiScore);
             }

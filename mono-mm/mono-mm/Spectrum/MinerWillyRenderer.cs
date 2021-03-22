@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using ManicMiner.Converter.Lib.Models;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SK2D.Graphics;
@@ -26,7 +25,6 @@ namespace MonoManicMiner.Spectrum
         private float _time;
         private int _jp;
         private int _cheat;
-        private SoundEffect _pick;
 
         public bool GodMode { get; set; }
 
@@ -34,10 +32,10 @@ namespace MonoManicMiner.Spectrum
 
         public event EventHandler OnDeath;
 
-        public MinerWillyRenderer(Texture2D texture, SoundEffect pick)
+        public MinerWillyRenderer(Texture2D texture)
             : base(texture, 16)
         {
-            _pick = pick;
+
         }
 
         public void KillWilly()
@@ -53,8 +51,12 @@ namespace MonoManicMiner.Spectrum
             _jp = 0;
             _x = _room.willyStart.pos.x;
             _y = _room.willyStart.pos.y;
-        }
+            Position = new Vector2(_x, _y);
+            dir = _room.willyStart.dir;
 
+            var blockId = dir == 1 ? (8 + ((_x & 15) >> 1)) : (_x & 15) >> 1;
+            SetFrame(blockId);
+        }
 
         public void SetRoom(MMRoom room, int roomId, Action<GameStateType> changeGameState)
         {
@@ -71,9 +73,6 @@ namespace MonoManicMiner.Spectrum
 
             // Reset everything here!
             Reset();
-
-            var blockId = dir == 1 ? (8 + ((_x & 15) >> 1)) : (_x & 15) >> 1;
-            SetFrame(blockId);
         }
 
         private int GetWillyInput()
@@ -689,8 +688,6 @@ namespace MonoManicMiner.Spectrum
                 {
                     keys.RemoveAt(i);
                     IncrementScore?.Invoke(this, 100);
-                    // PlaySound SFXpick
-                    _pick.Play();
                 }
                 else
                 {
