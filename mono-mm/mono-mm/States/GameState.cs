@@ -17,6 +17,7 @@ namespace MonoManicMiner.States
     {
         private static float TRICKDOWN_COOLDOWN = 0.03f;
         private static Color DARK_COLOUR = Color.Blue;
+        private static int DEFAULT_LIVES = 6;
 
         private SoundEffect _pickUpKey;
         private SoundEffect _die;
@@ -114,10 +115,10 @@ namespace MonoManicMiner.States
 
         public override void Enter(params object[] args)
         {
-            _roomId = 1; // (int)args[0];
+            _roomId = (int)args[0];
             var loadMapFile = (bool)args[1];
 
-            var lives = 2;
+            var lives = DEFAULT_LIVES;
 
             if (args.Length > 2)
             {
@@ -279,6 +280,12 @@ namespace MonoManicMiner.States
             if (_lives.Lives < 0)
             {
                 StateManager.ChangeState("gameover", _currentRoom.name, _score, _hiScore);
+            }
+            else
+            {
+                // Reset the entire room when you die. This is _probably_ the quickest way
+                // to achieve this
+                StateManager.ChangeState("game", _roomId, true, _score, _hiScore, _lives.Lives);
             }
         }
 
