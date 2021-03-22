@@ -148,6 +148,11 @@ namespace MonoManicMiner.Spectrum
 
         private int CheckWillyKillBlock()
         {
+            if (GodMode)
+            {
+                return 0;
+            }
+
             var block1 = GetBlock(_x, _y);
             var block2 = GetBlock(_x + 8, _y);
             var block3 = GetBlock(_x, _y + 8);
