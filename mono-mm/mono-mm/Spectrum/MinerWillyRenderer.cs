@@ -88,21 +88,20 @@ namespace MonoManicMiner.Spectrum
 
         private void CheckRoboHit()
         {
-            if (!GodMode)
+            if (GodMode)
             {
-                CheckHorizontalRoboHit();
+                return;
             }
+
+            CheckHorizontalRoboHit();
         }
 
         private void CheckHorizontalRoboHit()
         {
-            //        For i = 1 To 4
             foreach (var robot in _room.horizEnemies)
             {
-                //    If cHROBOx(i)<> -1
                 if (robot.dir == 0)
                 {
-                    //        If cHROBOd(i)= 0
                     if (dir != 0)
                     {
                         var robRect = new Rectangle(robot.pos.x & 248, robot.pos.y, 16, 16);
@@ -111,23 +110,6 @@ namespace MonoManicMiner.Spectrum
                         {
                             _state = 6;
                         }
-
-                        //            If cWILLYd
-
-                        //                If ImagesCollide(image16, cWILLYx And 248,cWILLYy,8 + ((cWILLYx And 15)Shr 1),image16,cHROBOx(i) And 248,cHROBOy(i),cHROBOgfx(i) + ((cHROBOx(i) And cHROBOanim(i))/ 2))= 1
-
-                        //                    cWILLYm = 6
-
-                        //                End If
-
-                        //            Else
-                        //                If ImagesCollide(image16, cWILLYx And 248, cWILLYy, (cWILLYx And 15)Shr 1,image16,cHROBOx(i) And 248,cHROBOy(i),cHROBOgfx(i) + ((cHROBOx(i) And cHROBOanim(i))/ 2))= 1
-
-                        //                    cWILLYm = 6
-
-                        //                End If
-
-                        //            End If
                     }
                     else
                     {
@@ -159,122 +141,81 @@ namespace MonoManicMiner.Spectrum
                             _state = 6;
                         }
                     }
-
-                    //        Else
-                    //            If cWILLYd
-                    //                If ImagesCollide(image16, cWILLYx And 248, cWILLYy, 8 + ((cWILLYx And 15)Shr 1),image16,cHROBOx(i) And 248,cHROBOy(i),(cHROBOgfx(i) + ((cHROBOx(i) And cHROBOanim(i))/ 2))+cHROBOflip(i))= 1
-
-                    //                    cWILLYm = 6
-
-                    //                End If
-
-                    //            Else
-                    //                If ImagesCollide(image16, cWILLYx And 248, cWILLYy, (cWILLYx And 15)Shr 1,image16,cHROBOx(i) And 248,cHROBOy(i),(cHROBOgfx(i) + ((cHROBOx(i) And cHROBOanim(i))/ 2))+cHROBOflip(i))= 1
-
-                    //                    cWILLYm = 6
-
-                    //                End If
-
-                    //            End If
-
-                    //        End If
                 }
-                
-                //    End If
-
-                //Next
             }
         }
 
 
         private int CheckWillyKillBlock()
         {
-            return 0;
+            var block1 = GetBlock(_x, _y);
+            var block2 = GetBlock(_x + 8, _y);
+            var block3 = GetBlock(_x, _y + 8);
+            var block4 = GetBlock(_x + 8, _y + 8);
+            var block5 = GetBlock(_x, _y + 16);
+            var block6 = GetBlock(_x + 8, _y + 16);
+
+            var hit = 0;
+
+            if (block1 == 5 || block2 == 5 || block3 == 5 || block4 == 5 || block5 == 5 || block6 == 5)
+            {
+                hit = 1;
+            }
+
+            if (block1 == 6 || block2 == 6 || block3 == 6 || block4 == 6 || block5 == 6 || block6 == 6)
+            {
+                hit = 1;
+            }
+
+            return hit;
         }
 
         private void CheckWillyConv()
         {
-            //If WillyOnConv()= 1
             if (WillyOnConv())
             {
-                // cWILLYd == willy dir
-                //If cWILLYd<>cCONVd Or (INKEY And 3)= 0
                 if (dir != _room.travelator.dir || (_input & 3) == 0)
                 {
-                    //If cCONVd = 0
-                    if (_room.travelator.dir ==0)
-                    {
-                        //INKEY = ((INKEY And 253) Or 1)
-                        _input = (_input & 253) | 1;
-                    }
-                    else
-                    {
-                        //INKEY = ((INKEY And 254) Or 2)
-                        _input = (_input & 254) | 2;
-                    }
+                    _input = _room.travelator.dir == 0 ? (_input & 253) | 1 : (_input & 254) | 2;
                 }
             }
         }
 
         private bool WillyOnConv()
         {
-            //blk1 = GetBlock(cWILLYx, cWILLYy + 16)
             var block1 = GetBlock(_x, _y + 16);
-            //blk2 = GetBlock(cWILLYx + 8, cWILLYy + 16)
             var block2 = GetBlock(_x + 8, _y + 16);
-            //If blk1 = 7 Or blk2 = 7
+            
             return block1 == 7 || block2 == 7;
-            //Return 1
-            //Else
-            //Return 0
-            //End If
         }
 
         private void CheckWillyFall()
         {
-            //        blk1 = GetBlock(cWILLYx, cWILLYy + 16)
             var block1 = GetBlock(_x, _y + 16);
-            //blk2 = GetBlock(cWILLYx + 8, cWILLYy + 16)
             var block2 = GetBlock(_x + 8, _y + 16);
 
-    //If blk1 = 0 And blk2 = 0
             if (block1 == 0 && block2 == 0)
             {
-                //    cWILLYm = 4
                 _state = 4;
-                //    cWILLYjs = 0
                 _js = 0;
             }
-
-
-            //End If
         }
 
         private void CheckCrumb()
         {
-            //        blk1 = cCRUMB((cWILLYy / 8) + 3, (cWILLYx / 8) + 1)
             var block1 = GetCrumb(_x / 8, (_y / 8) + 2);
-            //blk2 = cCRUMB((cWILLYy / 8) + 3, (cWILLYx / 8) + 2)
             var block2 = GetCrumb(_x / 8 + 1, _y / 8 + 2);
 
-            //If blk1<>0
             if (block1 != 0)
             {
-                //    blk1 = blk1 - 1
                 block1--;
                 SetCrumb(_x / 8, (_y / 8) + 2, block1);
                 if (block1 == 0)
                 {
                     ClearBlock(_x / 8, (_y / 8) + 2);
                 }
-                //    cCRUMB((cWILLYy / 8) + 3, (cWILLYx / 8) + 1) = blk1
-                //    If blk1 = 0
-                //        cROOM((cWILLYy / 8) + 3, (cWILLYx / 8) + 1) = 0
-                //    End If
-                //End If
             }
 
-            //If blk2<>0
             if (block2 != 0)
             {
                 block2--;
@@ -283,13 +224,6 @@ namespace MonoManicMiner.Spectrum
                 {
                     ClearBlock((_x / 8) + 1, (_y / 8) + 2);
                 }
-                
-                //    blk2 = blk2 - 1
-                //    cCRUMB((cWILLYy / 8) + 3, (cWILLYx / 8) + 2) = blk2
-                //    If blk2 = 0
-                //        cROOM((cWILLYy / 8) + 3, (cWILLYx / 8) + 2) = 0
-                //    End If
-                //End If
             }
         }
 
@@ -372,120 +306,68 @@ namespace MonoManicMiner.Spectrum
 
         private void DoWillyJump()
         {
-            //         jp = ((cWILLYj And 254)-8)/ 2
             _jp = ((_j & 254) - 8) / 2;
-            // cWILLYy = (cWILLYy + jp)
             _y = _y + _jp;
 
-            // If cWILLYj<8
             if (_j < 8)
             {
-                //     blk1 = GetBlock(cWILLYx, cWILLYy)
                 var block1 = GetBlock(_x, _y);
-                //     blk2 = GetBlock(cWILLYx + 8, cWILLYy)
-
                 var block2 = GetBlock(_x + 8, _y);
 
-                //     If blk1 = 3 Or blk2 = 3
                 if (block1 == 3 || block2 == 3)
                 {
-                    //         cWILLYm = 4
                     _state = 4;
-
-                    //         cWILLYjs = 0
                     _js = 0;
-                    
-                    //         cWILLYy = (cWILLYy + 8) And 248
                     _y = (_y + 8) & 248;
-                    //     End If
                 }
-                // End If
             }
 
-            // If cWILLYj> 11
             if (_j > 11)
             {
-                //     If(cWILLYy And 7) = 0
                 if ((_y & 7) == 0)
                 {
-                    //         blk1 = GetBlock(cWILLYx, cWILLYy + 16)
                     var block1 = GetBlock(_x, _y + 16);
-                    //         blk2 = GetBlock(cWILLYx + 8, cWILLYy + 16)
                     var block2 = GetBlock(_x + 8, _y + 16);
-                    //         If blk1<>0 Or blk2<>0
+
                     if (block1 != 0 || block2 != 0)
                     {
                         _state = 0;
                         _j = 0;
                         _y = _y & 248;
-                        //             cWILLYm = 0
-
-                        //             cWILLYj = 0
-
-                        //             cWILLYy = (cWILLYy And 248)
-                        //End If
                     }
                 }
-                //     End If
-
-                // End If
             }
-
-
-            // cWILLYj = cWILLYj + 1
             _j++;
 
-            // If cWILLYj = 18
             if (_j == 18)
             {
-                //     cWILLYm = 0
                 _state = 0;
-                //     cWILLYj = 0
                 _j = 0;
-                //     CheckWillyFall()
                 CheckWillyFall();
-                // End If
             }
 
-
-            // If cWILLYj<11
             if (_j < 11)
             {
-                //     cWILLYjs = cWILLYjs + 1
                 _js++;
             }
             else
-            // Else
             {
-                //     If cWILLYj > 10
                 if (_j > 10)
                 {
-                    //         cWILLYjs = cWILLYjs - 1
                     _js--;
                 }
-                //     End If
             }
-            // End If
 
 
-            // If cWILLYj> 12
             if (_j > 12)
             {
-                //     cWILLYfall = (cWILLYfall + jp)
                 _willyFall = _willyFall + _jp;
             }
-            // End If
 
-
-            // If cWILLYm<>0
             if (_state != 0)
             {
-                //     SoundPitch SFXjump,16384 + (cWILLYjs * 1500)
-
-                //     PlaySound SFXjump
                 Jumping.Invoke(this, _js);
             }
-            // End If
         }
 
         private void DoNormalMovement(int input)
@@ -580,14 +462,12 @@ namespace MonoManicMiner.Spectrum
             }
 
             _time -= 0.1f;
-
             _input = GetWillyInput();
 
             CheckRoboHit();
 
             if (CheckWillyKillBlock() != 0)
             {
-                // set music?! to 6
                 _state = 6;
             }
 
@@ -609,7 +489,6 @@ namespace MonoManicMiner.Spectrum
                     DoWillyLeft();
                     DoWillyJump();
                     break;
-
                 case 3:
                     DoWillyRight();
                     DoWillyJump();
@@ -620,11 +499,6 @@ namespace MonoManicMiner.Spectrum
                 case 6:
                     DoDeath();
                     break;
-                //		Case	4
-                //			DoWillyFall()
-                //		Case	6
-                //			DoDeath()
-
             }
 
             CheckKeys();
